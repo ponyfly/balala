@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>demo1</title>
+  <style>
+    h2{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<h1>demo1</h1>
+<a href="./demo2.html" style="font-size: 100px">to demo2</a>
+
+<h1>1</h1>
+<h2>2</h2>
+<script src="./jquery1.12.0.min.js"></script>
+<script>
+
+  if (window.history && window.history.pushState) {
+    $(window).on('popstate', function() {
+      console.log(location.hash);
+      if(location.hash !== '#for' ) {
+        $('h1').hide()
+        $('h2').show()
+      }
+    })
+  }
+  function pushHistory() {
+    var state = {
+      title: '',
+      url: '#'
+    }
+    window.history.pushState(state, '', '#for')
+  }
+  pushHistory()
+</script>
+</body>
+</html>
