@@ -11,9 +11,9 @@ module.exports = merge(common, {
   output: {
     path: resolve(__dirname, '..', 'dist'),
     filename: 'static/js/[name]-[chunkhash:8].js',
-    publicPath: 'http://image1.guang.j.cn/images/css/static/dy/'
+    publicPath: '/'
   },
-  // devtool: 'source-map',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -25,14 +25,14 @@ module.exports = merge(common, {
               minimize: true
             }
           },
-          publicPath: 'http://image1.guang.j.cn/images/css/static/dy/',
+          publicPath: '/',
         })
       }
     ]
   },
   plugins: [
     new UglifyWebpackPlugin({
-      // sourceMap: true
+      sourceMap: true
     }),
     new webpack.DefinePlugin({
       'process.env': {
@@ -56,21 +56,9 @@ module.exports = merge(common, {
       filename: 'index.html',
       inject: true,
       hash:false,
-      chunks: ['manifest', 'vender', 'app'],
       minify: {
         removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebapckPlugin({
-      template: './app/recommend.html',
-      filename: 'recommend.html',
-      inject: true,
-      hash:false,
-      chunks: ['recommend'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
+        collapseWhitespace: false
       }
     })
   ]

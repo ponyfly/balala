@@ -29,20 +29,9 @@ module.exports = merge(common, {
       template: './app/index.html',
       filename: 'index.html',
       inject: true,
-      chunks: ['app'],
       minify: {
         removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebapckPlugin({
-      template: './app/recommend.html',
-      filename: 'recommend.html',
-      inject: true,
-      chunks: ['recommend'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
+        collapseWhitespace: false
       }
     })
   ]

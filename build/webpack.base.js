@@ -4,7 +4,6 @@ module.exports = {
   //entry中的app和add对应于output的name
   entry: {
     app: './app/js/main.js',
-    recommend: './app/js/recommend.js',
     vender: ['jquery']
   },
   resolve:{

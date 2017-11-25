@@ -159,39 +159,39 @@ function addEvent() {
   }
   $('.tab_1').on('click', function () {
     //下载总点击
-    objARInit._send1_1('actorvideo', 'download', function () {})
+    // objARInit._send1_1('actorvideo', 'download', function () {})
     //下载剧本统计
-    objARInit._send1_1('actorvideo', 'download-' + themeId, function () {})
+    // objARInit._send1_1('actorvideo', 'download-' + themeId, function () {})
     if($('.tab_4').css('display') === 'block') {
-      objARInit._send1_1('actorvideo', 'download-out-'+ curPlan, function () {
-        console.log('download-out-'+ curPlan);
-        toAppStore()
-      })
+      // objARInit._send1_1('actorvideo', 'download-out-'+ curPlan, function () {
+      //   console.log('download-out-'+ curPlan);
+      //   toAppStore()
+      // })
     }else{
       if(isUserVideo) {
         //用户视频触发下载
-        objARInit._send1_1('actorvideo', 'download-user-' + curPlan, function () {
-          console.log('download-user-' + curPlan);
-          toAppStore()
-        })
+        // objARInit._send1_1('actorvideo', 'download-user-' + curPlan, function () {
+        //   console.log('download-user-' + curPlan);
+        //   toAppStore()
+        // })
       } else {
         //推荐视频触发下载
-         objARInit._send1_1('actorvideo', 'download-recommend' + curRecommendId + '-' + curPlan, function () {
-           console.log('download-recommend' + curRecommendId + '-' + curPlan);
-           toAppStore()
-         })
+        //  objARInit._send1_1('actorvideo', 'download-recommend' + curRecommendId + '-' + curPlan, function () {
+        //    console.log('download-recommend' + curRecommendId + '-' + curPlan);
+        //    toAppStore()
+        //  })
       }
     }
   })
   $('.tab_6 .download').on('click', function () {
-    objARInit._send1_1('actorvideo', 'download', function () {
-      objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
-        objARInit._send1_1('actorvideo', 'download-back-'+ curPlan, function () {
-          console.log('download-back-'+ curPlan);
-          toAppStore()
-        })
-      })
-    })
+    // objARInit._send1_1('actorvideo', 'download', function () {
+    //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
+    //     objARInit._send1_1('actorvideo', 'download-back-'+ curPlan, function () {
+    //       console.log('download-back-'+ curPlan);
+    //       toAppStore()
+    //     })
+    //   })
+    // })
   })
   /*点击遮罩，控制播放与暂停*/
   $('.tab_3').on('click', function (e) {
@@ -285,7 +285,7 @@ function addEvent() {
       $('.tab_3').triggerHandler('click')
       isUserVideo = false
       /*点击推荐视频发送id 1x1*/
-      objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
+      // objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
     })
     /*点击推荐视频列表二*/
     $('.more_list').on('click', 'li', function () {
@@ -307,7 +307,7 @@ function addEvent() {
       tab3FirstClick = false
       media.play()
       /*点击推荐视频发送id 1x1*/
-      objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
+      // objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
     })
     /**
      * 点击推荐视频列表三
@@ -335,29 +335,29 @@ function addEvent() {
       isUserVideo = false
       tab3FirstClick = false
       /*点击推荐视频发送id 1x1*/
-      objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {})
+      // objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {})
     })
   } else {
     $('.recommend_list').on('click', 'li', function () {
       var hotId = $('.recommend_list li').index(this) + 1
-      objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
-        console.log(hotId);
-        toAppStore()
-      })
+      // objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
+      //   console.log(hotId);
+      //   toAppStore()
+      // })
     })
     $('.more_list').on('click', 'li', function () {
       var hotId = $('.more_list li').index(this) + 5
-      objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
-        console.log(hotId);
-        toAppStore()
-      })
+      // objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
+      //   console.log(hotId);
+      //   toAppStore()
+      // })
     })
     $('.recommend_list_all').on('click', 'li', function () {
       var hotId = $('.recommend_list_all li').index(this) + 1
-      objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {
-        console.log(hotId);
-        toAppStore()
-      })
+      // objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {
+      //   console.log(hotId);
+      //   toAppStore()
+      // })
     })
   }
   /**
@@ -416,10 +416,10 @@ var videoPosterH = 0
 curPlan = plans[Math.floor(Math.random() * 4)]
 var currentEnv = judgeEnv() //获取运行环境
 //获取url参数
-var postId = objARInit._GetQueryString('postid')
-var videoUrl = objARInit._GetQueryString('videoUrl')
-var imgUrl = objARInit._GetQueryString('imgUrl')
-var themeId = objARInit._GetQueryString('themeId')
+var postId = objARInit._GetQueryString('postid') || 353809409  //1192802496
+var videoUrl = objARInit._GetQueryString('videoUrl') ||  "https://video1.j.cn/video/forum/171031/2039/cf88d0984abf4223.m3u8"
+var imgUrl = objARInit._GetQueryString('imgUrl') || "https://static3.j.cn/img/testforum/171103/1803/aa652fd5ccef462f.jpg"
+var themeId = objARInit._GetQueryString('themeId') || 3
 var themeName = objARInit._GetQueryString('themeName')
 
 $(function () {
@@ -432,9 +432,9 @@ $(function () {
     changeStyle()
   }
   //初始化统计
-  objARInit._send1_1('actorvideo', 'share-open', function () {})
+  /*objARInit._send1_1('actorvideo', 'share-open', function () {})
   objARInit._send1_1('actorvideo', 'share-open-' + themeId, function () {})
-  objARInit._send1_1('actorvideo', 'share-open-' + curPlan, function () {})
+  objARInit._send1_1('actorvideo', 'share-open-' + curPlan, function () {})*/
   if(currentEnv.pc){
     //pc
     import('hls.js')
