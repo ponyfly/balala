@@ -109,9 +109,9 @@ function getRecommendItem(ele, id, title) {
       type: 'GET',
       dataType: 'jsonp',
       success: function (res) {
-        var imgUrl = res.gameEntry.video.thumbPic
-        var videoUrl = res.gameEntry.video.url
-        ele.data({"imgUrl": imgUrl, "src": videoUrl})
+        var posterSrc = res.gameEntry.video.thumbPic
+        var videoSrc = res.gameEntry.video.url
+        ele.data({"poster-src": posterSrc, "video-src": videoSrc})
         ele.find("span").text(title)
         counter ++
         if(counter === 8) {
@@ -122,21 +122,16 @@ function getRecommendItem(ele, id, title) {
         console.log(err.message);
       }
     })
-  } else if(curPlan === 'planC') {
+  } else if(curPlan === 'planC' || curPlan === 'planD') {
     counter ++
     ele.find("img").attr({"src": require('../imgs/opera' +counter+ '.png')})
     ele.find("span").text(title)
     if(counter === 8) {
       getAllLists()
-    }
-  } else if (curPlan === 'planD') {
-    counter ++
-    ele.find("img").attr({"src": require('../imgs/opera' +counter+ '.png')})
-    ele.find("span").text(title)
-    if(counter === 8) {
-      getAllLists()
-      var $mores = $('.tab_5 .more_list li').clone()
-      $('.tab_4 .recommend_list').append($mores)
+      if(curPlan === 'planD') {
+        var $mores = $('.tab_5 .more_list li').clone()
+        $('.tab_4 .recommend_list').append($mores)
+      }
     }
   }
 }
@@ -145,18 +140,22 @@ function getRecommendItem(ele, id, title) {
  */
 function addEvent() {
   var media = $('#media')[0]
-  if(window.history && window.history.pushState) {
-    $(window).on('popstate', function () {
+  $(window).on('popstate', function () {
+    if(curPlan === 'planA' || curPlan === 'planB') {
       if(location.hash !== '#for') {
         if(currentEnv.iphone) {
           media.pause()
-          $('#media').triggerHandler('ended')
+          // $('#media').triggerHandler('ended')
         }
         $('.tab_6').siblings().hide()
         $('.tab_6').show()
       }
-    })
-  }
+    } else if(curPlan === 'planC' || curPlan === 'planD') {
+      $('.tab_5').add('.tab_6').hide()
+      $('#app').children().not('.tab_5').not('.tab_6').show()
+      tab3FirstClick = true
+    }
+  })
   $('.tab_1').on('click', function () {
     //下载总点击
     // objARInit._send1_1('actorvideo', 'download', function () {})
@@ -197,17 +196,23 @@ function addEvent() {
   $('.tab_3').on('click', function (e) {
     var opacityVal = $(this).css('opacity')
     if(tab3FirstClick === true) {
-      var posterH = $('.poster').height()
-      videoPosterH = posterH
       var tab1H = $('.tab_1').height()
       if(!e.isTrigger) {
-        $("#media").attr({'src': videoUrl})
+        if(currentEnv.pc && objARInit.hls){
+          objARInit.hls.loadSource(videoUrl)
+          objARInit.hls.attachMedia(media)
+        }else {
+          $("#media").attr({'src': videoUrl})
+        }
+        isUserVideo = true
+      } else {
+        isUserVideo = false
       }
-      $('.poster').add('.tab_1').add('.line').add('.tab_4').hide()
-      $('.tab_2').add('#media').css({"height": currentEnv.pc ? (posterH - 1) : 'auto'})
-      $(this).height(currentEnv.pc ? posterH - 33 : posterH - tab1H)
-      $(this).add('#media').css({"opacity": 0})
-      $('.tab_1').css({"position":"fixed", "bottom":currentEnv.pc ? "auto" : 0, 'z-index':26})
+      $('.tab_1').add('.line').add('.tab_4').add('.poster').hide()
+      $('.tab_2').add('#media').css({"height": currentEnv.pc ? (videoPosterH - 1) : 'auto'})
+      $(this).height(currentEnv.pc ? videoPosterH - 33 : videoPosterH - tab1H)
+      $(this).add('#media').css({opacity: 0})
+      $('.tab_1').css({position: "fixed", bottom: currentEnv.pc ? "auto" : 0, 'z-index':26})
       if(currentEnv.iphone) {
         $('.tab_1').show().addClass('bounceInUp')
         setTimeout(function () {
@@ -216,7 +221,6 @@ function addEvent() {
       }
       media.play()
       tab3FirstClick = false
-      isUserVideo = true
     } else {
       if(opacityVal === "0") {
         $(this).css({"opacity": 1})
@@ -230,7 +234,7 @@ function addEvent() {
   /*开始播放的时候显示播放器*/
   $('#media').on('playing', function () {
     if(initPlayer){
-      $(this).css({"opacity": 1})
+      $(this).css({opacity: 1})
       $('.tab_1').show().addClass('bounceInUp')
       setTimeout(function () {
         $('.tab_1').removeClass('bounceInUp')
@@ -242,14 +246,13 @@ function addEvent() {
   /*播放结束*/
   $('#media').on('ended', function () {
     if(curPlan === 'planA' || curPlan === 'planB') {
-      $('.play').hide()
-      $('.tab_3').css({opacity: 1})
+      // $('.play').hide()
+      // $('.tab_3').css({opacity: 1})
       $('.tab_5').show()
     } else {
       $('.tab_6').siblings().hide()
       $('.tab_6').show()
     }
-    tab3FirstClick = true
     initPlayer = true
   })
   /*正在缓冲*/
@@ -258,15 +261,18 @@ function addEvent() {
   })
   /*中途退出全屏回到初始页面*/
   media.addEventListener('x5videoexitfullscreen', function () {
-    if(this.currentTime > 0 && this.currentTime < this.duration) {
-      $('#media').triggerHandler('ended')
-    }
+    $('.tab_1').css({position: "static"})
+    $('.tab_2').add('.tab_3').css({height: appWidth})
+    $('.tab_3').css({opacity: 1})
+    $('.poster').add('.line').add('.tab_4').show()
     $('.tab_5').hide()
-    $('.poster').add('.line').add('.tab_4').add('.tab_3').add('.play').show()
-    $('.tab_2').add('.tab_3').css({"height":$('#app').width()})
-    $('.tab_1').css({"position":"static"})
+
     if(curPlan === 'planC' || curPlan === 'planD') {
       $('.tab_4').add('.tab_5').hide()
+    }
+    if(this.currentTime > 0 && this.currentTime < this.duration) {
+      initPlayer = true
+      tab3FirstClick = true
     }
   })
   if(curPlan === 'planA') {
@@ -275,36 +281,33 @@ function addEvent() {
       var hotId = $('.recommend_list li').index(this) + 1
       if(currentEnv.pc){
         if(objARInit.hls){
-          objARInit.hls.loadSource($(this).data("src"))
+          objARInit.hls.loadSource($(this).data("video-src"))
           objARInit.hls.attachMedia(media)
         }
       }else{
-        $("#media").attr({"src":$(this).data("src")})
+        $("#media").attr({src:$(this).data("video-src")})
       }
       curRecommendId = hotId
+      tab3FirstClick = true
       $('.tab_3').triggerHandler('click')
-      isUserVideo = false
       /*点击推荐视频发送id 1x1*/
       // objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
     })
     /*点击推荐视频列表二*/
     $('.more_list').on('click', 'li', function () {
       var hotId = $('.more_list li').index(this) + 5
-      $('#media').css({"opacity": 0})
-      $('.play').show()
-      $('.tab_5').hide()
+      $('#media').css({opacity: 0})
       if(currentEnv.pc){
         if(objARInit.hls){
-          objARInit.hls.loadSource($(this).data("src"))
+          objARInit.hls.loadSource($(this).data("video-src"))
           objARInit.hls.attachMedia(media)
         }
       }else{
-        $("#media").attr({"src":$(this).data("src")})
+        $("#media").attr({src:$(this).data("video-src")})
       }
-      $('.tab_3').css({opacity: 0})
+      $('.tab_5').hide()
       curRecommendId = hotId
       isUserVideo = false
-      tab3FirstClick = false
       media.play()
       /*点击推荐视频发送id 1x1*/
       // objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
@@ -315,20 +318,20 @@ function addEvent() {
     $('.recommend_list_all').on('click', 'li', function () {
       var tab1H = $('.tab_1').height()
       var hotId = $('.recommend_list_all li').index(this) + 1
-      $('.play').add('.tab_2').add('.tab_3').show()
       $('.tab_6').add('.poster').hide()
-      $('.tab_2').add('#media').css({"height": currentEnv.pc ? (videoPosterH - 1) : 'auto'})
-      $('.tab_3').height(currentEnv.pc ? videoPosterH - 33 : $('.tab_2').height() - tab1H)
-      $('.tab_3').add('#media').css({"opacity": 0})
-      $('.tab_1').css({"position":"fixed", "bottom":currentEnv.pc ? "auto" : 0, 'z-index':26})
-      if(currentEnv.pc){
+      $('.tab_2').add('.tab_3').show()
+      $('.tab_2').add('#media').css({height: currentEnv.pc ? (videoPosterH - 1) : 'auto'})
+      $('.tab_3').height(currentEnv.pc ? videoPosterH - 33 : videoPosterH - tab1H)
+      $('.tab_3').add('#media').css({opacity: 0})
+      $('.tab_1').css({position: "fixed", bottom: currentEnv.pc ? "auto" : 0, 'z-index':26})
+      if(currentEnv.pc) {
         if(objARInit.hls){
-          objARInit.hls.loadSource($(this).data("src"))
+          objARInit.hls.loadSource($(this).data("video-src"))
           objARInit.hls.attachMedia(media)
         }
       }else{
         var curLi = hotId < 5 ? $($('.recommend_list li')[hotId - 1]) : $($('.more_list li')[hotId - 5])
-        $("#media").attr({"src": curLi.data("src")})
+        $("#media").attr({"src": curLi.data("video-src")})
       }
       curRecommendId = hotId
       media.play()
@@ -365,11 +368,7 @@ function addEvent() {
    */
   $('.replay').on('click', function () {
     $('#media').css({"opacity": 0})
-    $('.play').show()
     $('.tab_5').hide()
-    $('.tab_3').css({opacity: 0})
-    // isUserVideo = true
-    tab3FirstClick = false
     media.play()
   })
 }
@@ -405,15 +404,17 @@ function scalePcPage() {
   $('.loader').css({position:'absolute',width: 50, height: 50})
 }
 var objARInit = new ARInit()
-var tab3FirstClick = true //是否是第一次点击tab_3
+var tab3FirstClick = true //是否是在首页点击tab_3
 var initPlayer = true //是否开始播放
 var isUserVideo = true //是否是用户video
 var curRecommendId = null //当前点击的推荐video的Id
-var plans = ['planA', 'planB', 'planC', 'planD']
-var curPlan = null
-var counter = 0
+var plans = ['planA', 'planB', 'planC', 'planD'] //可选方案
+var curPlan = null //当前方案
+var counter = 0 //recommend视频计数器
 var videoPosterH = 0
+var appWidth = 750
 curPlan = plans[Math.floor(Math.random() * 4)]
+curPlan = 'planD'
 var currentEnv = judgeEnv() //获取运行环境
 //获取url参数
 var postId = objARInit._GetQueryString('postid') || 353809409  //1192802496
@@ -428,6 +429,8 @@ $(function () {
   $('.poster').attr('src', imgUrl)
   getRecommendLists()
   getMoreLists()
+  addEvent()
+  pushHistroy()
   if(curPlan === 'planC' || curPlan === 'planD'){
     changeStyle()
   }
@@ -444,21 +447,22 @@ $(function () {
           objARInit.hls.loadSource(videoUrl)
           objARInit.hls.attachMedia(media)
         }
-        window.onload = function () {
-          $('#app').show()
-          scalePcPage()
-        }
       })
   }else{
     //mobile
-    if(currentEnv.android){
+    if(currentEnv.weixin || currentEnv.qq){
+      //微信全屏的时候设置推荐列表距离顶端距离
       $('.tab_5').css({'padding-top': 64})
     }
     if(currentEnv.iphone){
       $('.tab_6 .recommend_list_all').css({'padding-bottom': 120})
     }
-    $('#app').show()
   }
-  addEvent()
-  pushHistroy()
+  window.onload = function () {
+    $('#app').show()
+    if(currentEnv.pc){
+      scalePcPage()
+    }
+    videoPosterH = $('.poster').height()
+  }
 })
