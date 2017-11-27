@@ -142,38 +142,51 @@ function addEvent() {
   var media = $('#media')[0]
   $(window).on('popstate', function () {
     if(curPlan === 'planA' || curPlan === 'planB') {
-      if(location.hash !== '#for') {
-        if(currentEnv.iphone) {
-          media.pause()
-          // $('#media').triggerHandler('ended')
-        }
+      if(currentEnv.iphone) {
+        media.pause()
+        // $('#media').triggerHandler('ended')
+      }
+      $('.tab_6').siblings().hide()
+      $('.tab_6').show()
+    } else if(curPlan === 'planC' || curPlan === 'planD') {
+      if($('.tab_6').css('display') === 'none'){
+        //首页返回
         $('.tab_6').siblings().hide()
         $('.tab_6').show()
+      }else{
+        //在tab_6页返回,返回主页
+        $('.tab_5').add('.tab_6').hide()
+        $('.tab_2').add('.tab_3').css({height: appWidth})
+        $('.tab_3').css({opacity: 1})
+        $('.tab_1').css({position: 'static'})
+        $('#app').children().not('.tab_5').not('.tab_6').add('.poster').show()
+        tab3FirstClick = true
       }
-    } else if(curPlan === 'planC' || curPlan === 'planD') {
-      $('.tab_5').add('.tab_6').hide()
-      $('#app').children().not('.tab_5').not('.tab_6').show()
-      tab3FirstClick = true
     }
   })
   $('.tab_1').on('click', function () {
     //下载总点击
-    // objARInit._send1_1('actorvideo', 'download', function () {})
+    // objARInit._send1_1('actorvideo', 'download', function () {
+    //   objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {})
+    // })
     //下载剧本统计
     // objARInit._send1_1('actorvideo', 'download-' + themeId, function () {})
-    if($('.tab_4').css('display') === 'block') {
+    if(tab3FirstClick) {
+      alert('download-out-'+ curPlan)
       // objARInit._send1_1('actorvideo', 'download-out-'+ curPlan, function () {
       //   console.log('download-out-'+ curPlan);
       //   toAppStore()
       // })
     }else{
       if(isUserVideo) {
+        alert('user')
         //用户视频触发下载
         // objARInit._send1_1('actorvideo', 'download-user-' + curPlan, function () {
         //   console.log('download-user-' + curPlan);
         //   toAppStore()
         // })
       } else {
+        alert('download-recommend' + curRecommendId + '-' + curPlan)
         //推荐视频触发下载
         //  objARInit._send1_1('actorvideo', 'download-recommend' + curRecommendId + '-' + curPlan, function () {
         //    console.log('download-recommend' + curRecommendId + '-' + curPlan);
@@ -183,11 +196,14 @@ function addEvent() {
     }
   })
   $('.tab_6 .download').on('click', function () {
+    alert('download-back-'+ curPlan)
     // objARInit._send1_1('actorvideo', 'download', function () {
     //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
-    //     objARInit._send1_1('actorvideo', 'download-back-'+ curPlan, function () {
-    //       console.log('download-back-'+ curPlan);
-    //       toAppStore()
+    //     objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+    //       objARInit._send1_1('actorvideo', 'download-back-'+ curPlan, function () {
+    //         console.log('download-back-'+ curPlan);
+    //         toAppStore()
+    //       })
     //     })
     //   })
     // })
@@ -272,8 +288,8 @@ function addEvent() {
     }
     if(this.currentTime > 0 && this.currentTime < this.duration) {
       initPlayer = true
-      tab3FirstClick = true
     }
+    tab3FirstClick = true
   })
   if(curPlan === 'planA') {
     /*点击推荐视频列表一*/
@@ -288,9 +304,9 @@ function addEvent() {
         $("#media").attr({src:$(this).data("video-src")})
       }
       curRecommendId = hotId
-      tab3FirstClick = true
       $('.tab_3').triggerHandler('click')
       /*点击推荐视频发送id 1x1*/
+      alert(hotId)
       // objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
     })
     /*点击推荐视频列表二*/
@@ -310,11 +326,10 @@ function addEvent() {
       isUserVideo = false
       media.play()
       /*点击推荐视频发送id 1x1*/
+      alert(hotId)
       // objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
     })
-    /**
-     * 点击推荐视频列表三
-     */
+    /*点击推荐视频列表三*/
     $('.recommend_list_all').on('click', 'li', function () {
       var tab1H = $('.tab_1').height()
       var hotId = $('.recommend_list_all li').index(this) + 1
@@ -338,28 +353,50 @@ function addEvent() {
       isUserVideo = false
       tab3FirstClick = false
       /*点击推荐视频发送id 1x1*/
+      alert(hotId)
       // objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {})
     })
   } else {
     $('.recommend_list').on('click', 'li', function () {
       var hotId = $('.recommend_list li').index(this) + 1
-      // objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
-      //   console.log(hotId);
-      //   toAppStore()
+      alert(hotId)
+      // objARInit._send1_1('actorvideo', 'download', function () {
+      //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
+      //     objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+      //       objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
+      //         console.log(hotId);
+      //         toAppStore()
+      //       })
+      //     })
+      //   })
       // })
     })
     $('.more_list').on('click', 'li', function () {
       var hotId = $('.more_list li').index(this) + 5
-      // objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
-      //   console.log(hotId);
-      //   toAppStore()
+      alert(hotId)
+      // objARInit._send1_1('actorvideo', 'download', function () {
+      //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
+      //     objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+      //       objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
+      //         console.log(hotId);
+      //         toAppStore()
+      //       })
+      //     })
+      //   })
       // })
     })
     $('.recommend_list_all').on('click', 'li', function () {
       var hotId = $('.recommend_list_all li').index(this) + 1
-      // objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {
-      //   console.log(hotId);
-      //   toAppStore()
+      alert(hotId)
+      // objARInit._send1_1('actorvideo', 'download', function () {
+      //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
+      //     objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+      //       objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {
+      //         console.log(hotId);
+      //         toAppStore()
+      //       })
+      //     })
+      //   })
       // })
     })
   }
@@ -370,6 +407,8 @@ function addEvent() {
     $('#media').css({"opacity": 0})
     $('.tab_5').hide()
     media.play()
+    alert('repeat')
+    // objARInit._send1_1('actorvideo', 'repeat-' + curPlan, function () {})
   })
 }
 /**
@@ -414,7 +453,7 @@ var counter = 0 //recommend视频计数器
 var videoPosterH = 0
 var appWidth = 750
 curPlan = plans[Math.floor(Math.random() * 4)]
-curPlan = 'planD'
+curPlan = 'planC'
 var currentEnv = judgeEnv() //获取运行环境
 //获取url参数
 var postId = objARInit._GetQueryString('postid') || 353809409  //1192802496
@@ -435,9 +474,11 @@ $(function () {
     changeStyle()
   }
   //初始化统计
-  /*objARInit._send1_1('actorvideo', 'share-open', function () {})
-  objARInit._send1_1('actorvideo', 'share-open-' + themeId, function () {})
-  objARInit._send1_1('actorvideo', 'share-open-' + curPlan, function () {})*/
+  // objARInit._send1_1('actorvideo', 'share-open', function () {
+  //   objARInit._send1_1('actorvideo', 'share-open-' + themeId, function () {
+  //     objARInit._send1_1('actorvideo', 'share-open-' + curPlan, function () {})
+  //   })
+  // })
   if(currentEnv.pc){
     //pc
     import('hls.js')
@@ -450,9 +491,11 @@ $(function () {
       })
   }else{
     //mobile
-    if(currentEnv.weixin || currentEnv.qq){
-      //微信全屏的时候设置推荐列表距离顶端距离
-      $('.tab_5').css({'padding-top': 64})
+    if(currentEnv.android) {
+      if(currentEnv.weixin || currentEnv.qq){
+        //微信全屏的时候设置推荐列表距离顶端距离
+        $('.tab_5').css({'padding-top': 64})
+      }
     }
     if(currentEnv.iphone){
       $('.tab_6 .recommend_list_all').css({'padding-bottom': 120})

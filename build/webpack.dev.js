@@ -20,7 +20,7 @@ module.exports = merge(common, {
   devtool: 'cheap-module-eval-source-map',
   devServer: {
     contentBase: '../dist',
-    host: '192.168.199.167',
+    host: '192.168.2.198',
     port: 8092,
     open: true
   },
