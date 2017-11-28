@@ -141,28 +141,31 @@ function getRecommendItem(ele, id, title) {
 function addEvent() {
   var media = $('#media')[0]
   $(window).on('popstate', function () {
-    if(curPlan === 'planA' || curPlan === 'planB') {
-      if(currentEnv.iphone) {
-        media.pause()
-        // $('#media').triggerHandler('ended')
-      }
-      $('.tab_6').siblings().hide()
-      $('.tab_6').show()
-    } else if(curPlan === 'planC' || curPlan === 'planD') {
-      if($('.tab_6').css('display') === 'none'){
-        //首页返回
-        $('.tab_6').siblings().hide()
-        $('.tab_6').show()
-      }else{
-        //在tab_6页返回,返回主页
-        $('.tab_5').add('.tab_6').hide()
-        $('.tab_2').add('.tab_3').css({height: appWidth})
-        $('.tab_3').css({opacity: 1})
-        $('.tab_1').css({position: 'static'})
-        $('#app').children().not('.tab_5').not('.tab_6').add('.poster').show()
-        tab3FirstClick = true
-      }
+    if(!location.hash) {
+      location.replace('./recommend.html')
     }
+    // if(curPlan === 'planA' || curPlan === 'planB') {
+    //   if(currentEnv.iphone) {
+    //     media.pause()
+    //     // $('#media').triggerHandler('ended')
+    //   }
+    //   $('.tab_6').siblings().hide()
+    //   $('.tab_6').show()
+    // } else if(curPlan === 'planC' || curPlan === 'planD') {
+    //   if($('.tab_6').css('display') === 'none'){
+    //     //首页返回
+    //     $('.tab_6').siblings().hide()
+    //     $('.tab_6').show()
+    //   }else{
+    //     //在tab_6页返回,返回主页
+    //     $('.tab_5').add('.tab_6').hide()
+    //     $('.tab_2').add('.tab_3').css({height: appWidth})
+    //     $('.tab_3').css({opacity: 1})
+    //     $('.tab_1').css({position: 'static'})
+    //     $('#app').children().not('.tab_5').not('.tab_6').add('.poster').show()
+    //     tab3FirstClick = true
+    //   }
+    // }
   })
   $('.tab_1').on('click', function () {
     //下载总点击

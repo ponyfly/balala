@@ -21,13 +21,22 @@ module.exports = merge(common, {
   devServer: {
     contentBase: '../dist',
     host: '192.168.2.198',
-    port: 8092,
+    port: 8094,
     open: true
   },
   plugins: [
     new HtmlWebapckPlugin({
       template: './app/index.html',
       filename: 'index.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: false
+      }
+    }),
+    new HtmlWebapckPlugin({
+      template: './app/recommend.html',
+      filename: 'recommend.html',
       inject: true,
       minify: {
         removeComments: true,
