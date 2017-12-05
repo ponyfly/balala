@@ -99,7 +99,7 @@ function getMoreLists() {
     {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？"}
   ]
   var recommendDoms = $('.more_list').find('li')
-  for(var i = 0,len = recommends.length; i < len; i++){
+  for (var i = 0,len = recommends.length; i < len; i++) {
     var recommendDom = recommendDoms[i]
     var id = recommends[i].id
     var title = recommends[i].title
