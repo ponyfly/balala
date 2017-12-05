@@ -1,11 +1,12 @@
 const webpack = require('webpack')
-const {resolve} = require('path')
+const {resolve, join} = require('path')
 const merge = require('webpack-merge')
 const common = require('./webpack.base')
 const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebapckPlugin = require('html-webpack-plugin')
+const OptimizeCssPlugin = require('optimize-css-assets-webpack-plugin')
 
 module.exports = merge(common, {
   output: {
@@ -19,12 +20,17 @@ module.exports = merge(common, {
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
-          use: {
-            loader: 'css-loader',
-            options: {
-              minimize: true
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                minimize: true
+              }
+            },
+            {
+              loader: 'postcss-loader'
             }
-          },
+          ],
           publicPath: '/',
         })
       }
@@ -32,18 +38,27 @@ module.exports = merge(common, {
   },
   plugins: [
     new UglifyWebpackPlugin({
-      sourceMap: true
+      sourceMap: true,
+      uglifyOptions: {
+        compress: true,
+        warnings: false
+      }
     }),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
+    new OptimizeCssPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vender'
+      name: 'vender',
+      minChunks: function (module) {
+        return module.resource && /\.js$/.test(module.resource) && module.resource.indexOf(join(__dirname, '../node_modules')) === 0
+      }
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest'
+      name: 'manifest',
+      chunks: ['vender']
     }),
     //根据模块的相对路径生成一个hash值作为模块id，一旦模块内容改变，则hash改变
     new webpack.HashedModuleIdsPlugin(),

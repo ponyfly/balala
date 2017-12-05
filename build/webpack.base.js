@@ -4,7 +4,6 @@ module.exports = {
   //entry中的app和add对应于output的name
   entry: {
     app: './app/js/main.js',
-    vender: ['jquery']
   },
   resolve:{
     extensions: ['.js']  //引用模块时哪些后缀名可以省略
@@ -16,7 +15,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options:{
-            cacheDirectory: '../tmp'
+            cacheDirectory: resolve(__dirname, '..', 'tmp')
           }
         },
         include: resolve(__dirname, '..', 'app'),

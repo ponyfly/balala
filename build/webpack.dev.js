@@ -2,12 +2,20 @@ const merge = require('webpack-merge')
 const common = require('./webpack.base')
 const HtmlWebapckPlugin = require('html-webpack-plugin')
 const {resolve } = require('path')
+const os = require('os')
+
+let localhost  = ''
+try {
+  const network = os.networkInterfaces()
+  localhost = network[Object.keys(network)[0]][1].address
+} catch (e) {
+  localhost = 'localhost'
+}
 
 module.exports = merge(common, {
   output: {
     path: resolve(__dirname, '..', 'dist'),
-    filename: '[name].js',
-    publicPath: '/'
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -19,8 +27,7 @@ module.exports = merge(common, {
   },
   devtool: 'cheap-module-eval-source-map',
   devServer: {
-    contentBase: '../dist',
-    host: '192.168.2.198',
+    host: localhost,
     port: 8092,
     open: true
   },
@@ -28,11 +35,7 @@ module.exports = merge(common, {
     new HtmlWebapckPlugin({
       template: './app/index.html',
       filename: 'index.html',
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: false
-      }
+      inject: true
     })
   ]
 })

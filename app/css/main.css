@@ -15,10 +15,6 @@ body{background-color: #000;}
   margin:auto;
   width: 100%;
 }
-#media {
-  width: 100%;
-  object-fit: fill;
-}
 .tab_3 {
   position: absolute;
   top:0;
@@ -92,7 +88,8 @@ body{background-color: #000;}
   width:750px;
 }
 .tab_5 .more_title {
-  padding-top: 26px;
+  height:70px;
+  line-height: 70px;
   padding-left: 6%;
   font-size: 26px;
 }
@@ -138,9 +135,10 @@ body{background-color: #000;}
 }
 .more_list li {
   width: 41%;
-  padding: 0 0 2% 6%;
+  margin: 0 0 5% 6%;
+  position: relative;
 }
-.recommend_list li img, .more_list li img {
+.recommend_list li img {
   width:100%;
   border-radius: 3%;
 }
@@ -148,8 +146,15 @@ body{background-color: #000;}
   width: 100%;
   border-radius: 3% 3% 0 0;
 }
+.more_list li img {
+  width:100%;
+}
 .recommend_list li div, .more_list li div, .recommend_list_all li div {
   position: relative;
+}
+.more_list li div {
+  overflow: hidden;
+  border-radius: 3%;
 }
 .recommend_list li div:after, .more_list li div:after, .recommend_list_all li div:after {
   content: '';
@@ -162,6 +167,9 @@ body{background-color: #000;}
   width:30.5%;
   margin:auto;
   background: url("../imgs/play@2x.png") 0 0/100% 100%;
+}
+.more_list .plan_a div:after {
+  height:30.5%;
 }
 .recommend_list li span, .more_list li span, .recommend_list_all li span {
   display: block;
@@ -182,10 +190,47 @@ body{background-color: #000;}
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.more_list .plan_a span {
+  position: absolute;
+  bottom:0;
+  height: 60px;
+  line-height: 60px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  background-color: rgba(0,0,0,.4);
+}
+.tab_5 .current_opera_wrapper {
+  height:346px;
+  background: url("../imgs/opera_current.png") no-repeat;
+  background-size: cover;
+  position: relative;
+}
+.tab_5 .current_opera_wrapper .current_opera {
+  position: absolute;
+  width: 205px;
+  top:45px ;
+  left:23px;
+}
+.current_opera_title {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height:45px;
+  line-height: 45px;
+  box-sizing: border-box;
+  padding:0 8px;
+  text-align: center;
+  font-size: 24px;
+}
+.tab_5 .current_opera_wrapper .current_opera .current_opera_img {
+  display: block;
+  width:100%;
+  border-radius: 6px;
+}
 .replay {
   width: 22%;
   margin-left: 6%;
-  margin-top: 20px;
+  margin-top: -10px;
 }
 .loader {
   position: fixed;
