@@ -23,7 +23,12 @@ module.exports = {
       },
       {
         test: /\.html$/,
-        use: 'html-loader'
+        use: {
+          loader: 'html-loader',
+          options: {
+            attrs: [':src', ':data-src']
+          }
+        }
       },
       {
         test: /\.(png|jpg|svg|gif)$/,

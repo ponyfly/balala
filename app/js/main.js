@@ -4,7 +4,6 @@ import {ARInit } from './tools'
 import '../css/reset.css'
 import '../css/main.css'
 
-import wenan3 from '../imgs/wenan3.png'
 import wenan4 from '../imgs/wenan4.png'
 
 /**
@@ -76,10 +75,10 @@ function getCurrentOpera() {
  */
 function getRecommendLists() {
   var recommends = [
-    {id: 1201110613, title: (curPlan === 'planA' || curPlan === 'planB') ? "哈哈，快来看看我美不美？自拍还能这么搞笑~？" : "爱你"},
-    {id: 1192370251, title: (curPlan === 'planA' || curPlan === 'planB') ? "我们都是小仙女~你能找到乱入的糙汉子吗？" : "灵魂出窍"},
-    {id: 1192328686, title: (curPlan === 'planA' || curPlan === 'planB') ? "人真的有灵魂吗？谁能帮我解释下这个现象？" : "波斯猫"},
-    {id: 1203977419, title: (curPlan === 'planA' || curPlan === 'planB') ? "我爱洗澡皮肤好好~里面有美人出浴图哦~" : "床照"}
+    {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？"},
+    {id: 1192370251, title: "我们都是小仙女~你能找到乱入的糙汉子吗？"},
+    {id: 1192328686, title: "人真的有灵魂吗？谁能帮我解释下这个现象？"},
+    {id: 1203977419, title: "我爱洗澡皮肤好好~里面有美人出浴图哦~"}
   ]
   var recommendDoms = $('.recommend_list').find('li')
   for(var i = 0,len = recommends.length; i < len; i++){
@@ -94,10 +93,10 @@ function getRecommendLists() {
  */
 function getMoreLists() {
   var recommends = [
-    {id: 1210804012, title:  (curPlan === 'planA' || curPlan === 'planB') ? "BOOM~睡什么睡，跟我一起嗨起来~~" : "魅力女主播"},
-    {id: 1207083505, title:  (curPlan === 'planA' || curPlan === 'planB') ? "女孩子花点钱怎么了？为啥不让买包包？" : "天竺少女"},
-    {id: 1209339072, title:  (curPlan === 'planA' || curPlan === 'planB') ? "Baby想我就多看一眼，么么哒~" : "皇上驾崩"},
-    {id: 1210264099, title:  (curPlan === 'planA' || curPlan === 'planB') ? "喵~喵~变身波斯猫~把我带回家吧，好不好？" : "贵妃醉酒"}
+    {id: 1210804012, title: "BOOM~睡什么睡，跟我一起嗨起来~~"},
+    {id: 1207083505, title: "女孩子花点钱怎么了？为啥不让买包包？"},
+    {id: 1209339072, title: "Baby想我就多看一眼，么么哒~"},
+    {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？"}
   ]
   var recommendDoms = $('.more_list').find('li')
   for(var i = 0,len = recommends.length; i < len; i++){
@@ -115,15 +114,13 @@ function getMoreLists() {
  * 获取视频列表三
  */
 function getAllLists() {
-  if(curPlan === 'planA' || curPlan === 'planB') {
-    var operas = ["爱你","灵魂出窍","波斯猫","床照","魅力女主播","天竺少女", "皇上驾崩", "贵妃醉酒"]
-    var $lis = []
-    for(var i = 0; i < 8; i++) {
-      var $li = $('<li><div><img src="' + require('../imgs/opera'+(i+1)+'.png') + '" alt=""></div><span>' + operas[i] + '</span></li>')
-      $lis.push($li)
-    }
-    $('.tab_6 .recommend_list_all').append($lis)
+  var operas = ["爱你","灵魂出窍","波斯猫","床照","魅力女主播","天竺少女", "皇上驾崩", "贵妃醉酒"]
+  var $lis = []
+  for(var i = 0; i < 8; i++) {
+    var $li = $('<li><div><img src="' + require('../imgs/opera'+(i+1)+'.png') + '" alt=""></div><span>' + operas[i] + '</span></li>')
+    $lis.push($li)
   }
+  $('.tab_6 .recommend_list_all').append($lis)
 }
 /**
  * 根据id获取视频相关信息
@@ -132,37 +129,26 @@ function getAllLists() {
  * @param title 视频title
  */
 function getRecommendItem(ele, id, title)   {
-  if(curPlan === 'planA' || curPlan === 'planB') {
-    $.ajax({
-      url: "https://bbs.j.cn/api/gameEntryDetail?gameEntryId="+id+"&v=6.1.1",
-      type: 'GET',
-      dataType: 'jsonp',
-      success: function (res) {
-        var posterSrc = res.gameEntry.video.thumbPic
-        var videoSrc = res.gameEntry.video.url
-        ele.data({"poster-src": posterSrc, "video-src": videoSrc})
-        ele.find("span").text(title)
-        counter ++
-        if(counter === 8) {
-          getAllLists()
-        }
-      },
-      error: function (err) {
-        console.log(err.message);
-      }
-    })
-  } else if(curPlan === 'planC' || curPlan === 'planD') {
-    counter ++
-    ele.find("img").attr({"src": require('../imgs/opera' +counter+ '.png')})
-    ele.find("span").text(title)
-    if(counter === 8) {
-      getAllLists()
-      if(curPlan === 'planD') {
-        var $mores = $('.tab_5 .more_list li').clone()
-        $('.tab_4 .recommend_list').append($mores)
+  $.ajax({
+    url: "https://bbs.j.cn/api/gameEntryDetail?gameEntryId="+id+"&v=6.1.1",
+    type: 'GET',
+    dataType: 'jsonp',
+    success: function (res) {
+      var posterSrc = res.gameEntry.video.thumbPic
+      var videoSrc = res.gameEntry.video.url
+      ele.data({"poster-src": posterSrc, "video-src": videoSrc})
+      ele.find("span").text(title)
+    },
+    error: function (err) {
+      console.log(err.message);
+    },
+    complete: function () {
+      counter ++
+      if(counter === 8) {
+        getAllLists()
       }
     }
-  }
+  })
 }
 /**
  * 添加事件
@@ -170,28 +156,11 @@ function getRecommendItem(ele, id, title)   {
 function addEvent() {
   var media = $('#media')[0]
   $(window).on('popstate', function () {
-    if(curPlan === 'planA' || curPlan === 'planB') {
-      if(currentEnv.iphone) {
-        media.pause()
-        // $('#media').triggerHandler('ended')
-      }
-      $('.tab_6').siblings().hide()
-      $('.tab_6').show()
-    } else if(curPlan === 'planC' || curPlan === 'planD') {
-      if($('.tab_6').css('display') === 'none'){
-        //首页返回
-        $('.tab_6').siblings().hide()
-        $('.tab_6').show()
-      }else{
-        //在tab_6页返回,返回主页
-        $('.tab_5').add('.tab_6').hide()
-        $('.tab_2').add('.tab_3').css({height: appWidth})
-        $('.tab_3').css({opacity: 1})
-        $('.tab_1').css({position: 'static'})
-        $('#app').children().not('.tab_5').not('.tab_6').add('.poster').show()
-        tab3FirstClick = true
-      }
+    if(currentEnv.iphone) {
+      media.pause()
     }
+    $('.tab_6').siblings().hide()
+    $('.tab_6').show()
   })
   $('.tab_1').on('click', function () {
     // 下载总点击
@@ -318,17 +287,10 @@ function addEvent() {
   })
   /*播放结束*/
   $('#media').on('ended', function () {
-    if(curPlan === 'planA' || curPlan === 'planB') {
-      // $('.play').hide()
-      // $('.tab_3').css({opacity: 1})
       if(curPlan === 'planA') {
         $('.tab_1').css({'z-index': -100})
       }
       $('.tab_5').show()
-    } else {
-      $('.tab_6').siblings().hide()
-      $('.tab_6').show()
-    }
     initPlayer = true
   })
   /*正在缓冲*/
@@ -343,9 +305,6 @@ function addEvent() {
     $('.poster').add('.line').add('.tab_4').show()
     $('.tab_5').hide()
 
-    if(curPlan === 'planC' || curPlan === 'planD') {
-      $('.tab_4').add('.tab_5').hide()
-    }
     if(this.currentTime > 0 && this.currentTime < this.duration) {
       initPlayer = true
     }
@@ -468,13 +427,8 @@ function addEvent() {
  */
 function changeStyle() {
   var oImg = new Image()
-  oImg.src = curPlan === 'planC' ? wenan3 : wenan4
+  oImg.src = wenan4
   oImg.onload = function () {
-    if(curPlan === 'planC' || curPlan === 'planD') {
-      $('.tab_4 .recommend_title').text('热门剧本')
-      $('.tab_4').css({'background-color': '#f2f2f2','margin-top':-1})
-      $('.line').hide()
-    }
     if(curPlan === 'planB') {
       $('.tab_5 .current_opera_wrapper').remove()
       $('.tab_5 .more_list li').removeClass('plan_a')
@@ -523,7 +477,6 @@ var imgUrl = objARInit._GetQueryString('imgUrl') || "https://static3.j.cn/img/te
 var themeId = objARInit._GetQueryString('themeId') || 40
 var themeName = objARInit._GetQueryString('themeName')
 var curThemeId = themeId
-
 
 $(function () {
   var media = document.getElementById('media')
