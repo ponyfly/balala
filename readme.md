@@ -12,3 +12,7 @@
   //var screen = window.screen.height
   //android(1280)  iphone(1136)
   video全屏高度 = 1138 + 120 = 1258
+
++ 懒加载
+
+  recommend_list、more_list、all_list三个列表有图片，more_list不需要懒加载图片，window.onload的时候运行一次lazy-load,window.scroll的时候再次lazy-load。all_list lazy_laod时机：当all_list展示（当popstate时，检查scroll，lazyload事件是否 存在如果存在则不用添加scroll事件，否则就添加scroll事件）的时候首先lazy-load,然后添加scroll事件
