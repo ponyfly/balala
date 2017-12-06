@@ -164,34 +164,34 @@ function addEvent() {
   })
   $('.tab_1').on('click', function () {
     // 下载总点击
-    // objARInit._send1_1('actorvideo', 'download', function () {
-    //   objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
-    //     // 下载剧本统计
-    //     objARInit._send1_1('actorvideo', 'download-' + themeId, function () {})
-    //   })
-    // })
+    objARInit._send1_1('actorvideo', 'download', function () {
+      objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+        // 下载剧本统计
+        objARInit._send1_1('actorvideo', 'download-' + themeId, function () {})
+      })
+    })
     if(tab3FirstClick) {
       //在首页点击下载
-      alert('download-out-'+ curPlan)
-      // objARInit._send1_1('actorvideo', 'download-out-'+ curPlan, function () {
-      //   console.log('download-out-'+ curPlan);
-      //   toAppStore()
-      // })
+      // alert('download-out-'+ curPlan)
+      objARInit._send1_1('actorvideo', 'download-out-'+ curPlan, function () {
+        console.log('download-out-'+ curPlan);
+        toAppStore()
+      })
     }else{
       if(isUserVideo) {
-        alert('download-user-' + curPlan)
+        // alert('download-user-' + curPlan)
         //用户视频触发下载
-        // objARInit._send1_1('actorvideo', 'download-user-' + curPlan, function () {
-        //   console.log('download-user-' + curPlan);
-        //   toAppStore()
-        // })
+        objARInit._send1_1('actorvideo', 'download-user-' + curPlan, function () {
+          console.log('download-user-' + curPlan);
+          toAppStore()
+        })
       } else {
-        alert('download-recommend' + curRecommendId + '-' + curPlan)
+        // alert('download-recommend' + curRecommendId + '-' + curPlan)
         //推荐视频触发下载
-        //  objARInit._send1_1('actorvideo', 'download-recommend' + curRecommendId + '-' + curPlan, function () {
-        //    console.log('download-recommend' + curRecommendId + '-' + curPlan);
-        //    toAppStore()
-        //  })
+         objARInit._send1_1('actorvideo', 'download-recommend' + curRecommendId + '-' + curPlan, function () {
+           console.log('download-recommend' + curRecommendId + '-' + curPlan);
+           toAppStore()
+         })
       }
     }
   })
@@ -201,15 +201,15 @@ function addEvent() {
         if(isUserVideo) {
           objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
             objARInit._send1_1('actorvideo', 'download-user', function () {
-              alert('download-user')
-              // toAppStore()
+              // alert('download-user')
+              toAppStore()
             })
           })
         }else {
           objARInit._send1_1('actorvideo', 'download-' + curThemeId, function () {
             objARInit._send1_1('actorvideo', 'download-recommend' + curRecommendId + '-drama', function () {
-              alert('download-recommend' + curRecommendId + '-drama')
-              // toAppStore()
+              // alert('download-recommend' + curRecommendId + '-drama')
+              toAppStore()
             })
           })
         }
@@ -217,17 +217,17 @@ function addEvent() {
     })
   })
   $('.tab_6 .download').on('click', function () {
-    alert('download-back-'+ curPlan)
-    // objARInit._send1_1('actorvideo', 'download', function () {
-    //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
-    //     objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
-    //       objARInit._send1_1('actorvideo', 'download-back-'+ curPlan, function () {
-    //         console.log('download-back-'+ curPlan);
-    //         toAppStore()
-    //       })
-    //     })
-    //   })
-    // })
+    // alert('download-back-'+ curPlan)
+    objARInit._send1_1('actorvideo', 'download', function () {
+      objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
+        objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+          objARInit._send1_1('actorvideo', 'download-back-'+ curPlan, function () {
+            console.log('download-back-'+ curPlan);
+            toAppStore()
+          })
+        })
+      })
+    })
   })
   /*点击遮罩，控制播放与暂停*/
   $('.tab_3').on('click', function (e) {
@@ -277,10 +277,12 @@ function addEvent() {
       if(curPlan === 'planA') {
         $('.tab_1').css({'z-index': 26})
       }
-      $('.tab_1').show().addClass('bounceInUp')
-      setTimeout(function () {
-        $('.tab_1').removeClass('bounceInUp')
-      },3000)
+      if(!currentEnv.pc) {
+        $('.tab_1').show().addClass('bounceInUp')
+        setTimeout(function () {
+          $('.tab_1').removeClass('bounceInUp')
+        },3000)
+      }
       initPlayer = false
     }
     $('.loader').css({visibility: 'hidden'})
@@ -327,8 +329,8 @@ function addEvent() {
       curThemeId = themeIds[curRecommendId - 1]
       getCurrentOpera()
       /*点击推荐视频发送id 1x1*/
-      alert('hot-' + hotId + '-planA')
-      // objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
+      // alert('hot-' + hotId + '-planA')
+      objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
     })
     /*点击推荐视频列表二*/
     $('.more_list').on('click', 'li', function () {
@@ -349,66 +351,66 @@ function addEvent() {
       getCurrentOpera()
       media.play()
       /*点击推荐视频发送id 1x1*/
-      alert('hot-' + hotId + '-planA')
-      // objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
+      // alert('hot-' + hotId + '-planA')
+      objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
     })
     /*点击推荐视频列表三*/
     $('.recommend_list_all').on('click', 'li', function () {
       var hotId = $('.recommend_list_all li').index(this) + 1
-      alert('back-' + curPlan + '-hot-' + hotId)
-      // objARInit._send1_1('actorvideo', 'download', function () {
-      //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
-      //     objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
-      //       objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {
-      //         console.log(hotId);
-      //         toAppStore()
-      //       })
-      //     })
-      //   })
-      // })
+      // alert('back-' + curPlan + '-hot-' + hotId)
+      objARInit._send1_1('actorvideo', 'download', function () {
+        objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
+          objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+            objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {
+              console.log(hotId);
+              toAppStore()
+            })
+          })
+        })
+      })
     })
   } else {
     $('.recommend_list').on('click', 'li', function () {
       var hotId = $('.recommend_list li').index(this) + 1
-      alert(curPlan + '-hot-' + hotId)
-      // objARInit._send1_1('actorvideo', 'download', function () {
-      //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
-      //     objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
-      //       objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
-      //         console.log(hotId);
-      //         toAppStore()
-      //       })
-      //     })
-      //   })
-      // })
+      // alert(curPlan + '-hot-' + hotId)
+      objARInit._send1_1('actorvideo', 'download', function () {
+        objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
+          objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+            objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
+              console.log(hotId);
+              toAppStore()
+            })
+          })
+        })
+      })
     })
     $('.more_list').on('click', 'li', function () {
       var hotId = $('.more_list li').index(this) + 5
-      alert(curPlan + '-hot-' + hotId)
-      // objARInit._send1_1('actorvideo', 'download', function () {
-      //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
-      //     objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
-      //       objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
-      //         console.log(hotId);
-      //         toAppStore()
-      //       })
-      //     })
-      //   })
-      // })
+      // alert(curPlan + '-hot-' + hotId)
+      objARInit._send1_1('actorvideo', 'download', function () {
+        objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
+          objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+            objARInit._send1_1('actorvideo', curPlan + '-hot-' + hotId, function () {
+              console.log(hotId);
+              toAppStore()
+            })
+          })
+        })
+      })
     })
     $('.recommend_list_all').on('click', 'li', function () {
       var hotId = $('.recommend_list_all li').index(this) + 1
-      alert('back-' + curPlan + '-hot-' + hotId)
-      // objARInit._send1_1('actorvideo', 'download', function () {
-      //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
-      //     objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
-      //       objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {
-      //         console.log(hotId);
-      //         toAppStore()
-      //       })
-      //     })
-      //   })
-      // })
+      // alert('back-' + curPlan + '-hot-' + hotId)
+      objARInit._send1_1('actorvideo', 'download', function () {
+        objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
+          objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+            objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {
+              console.log(hotId);
+              toAppStore()
+            })
+          })
+        })
+      })
     })
   }
   /**
@@ -418,8 +420,8 @@ function addEvent() {
     $('#media').css({"opacity": 0})
     $('.tab_5').hide()
     media.play()
-    alert('repeat-' + curPlan)
-    // objARInit._send1_1('actorvideo', 'repeat-' + curPlan, function () {})
+    // alert('repeat-' + curPlan)
+    objARInit._send1_1('actorvideo', 'repeat-' + curPlan, function () {})
   })
 }
 /**
@@ -455,6 +457,17 @@ function scalePcPage() {
   $('.line').height(10)
   $(".recommend_list li div").css({height:215,"min-height":"auto"})
   $('.loader').css({position:'absolute',width: 50, height: 50})
+  if(curPlan === 'planA') {
+    $('.current_opera_wrapper').css({height: scale * $('.current_opera_wrapper').height()})
+    $('.current_opera').css({width: scale * $('.current_opera').width(), top: scale * 45, left: scale * 23})
+    $('.current_opera_title').css({height: scale * 45, 'line-height': scale * 45 + 'px', 'font-size': 14})
+    $('.more_title').css({height: 50, 'line-height': '50px', 'font-size': 16})
+    $('.more_list li div').css({height: w * 0.41})
+    $('.more_list .plan_a span').css({height: scale * 60, 'line-height': scale * 60 + 'px'})
+  }
+  $('.tab_6>img').eq(0).css({width: '100%'})
+  $('.tab_6 .download').css({position:'absolute', width: '100%'})
+  $('.recommend_list_all li span').css({'line-height': '20px', 'font-size': 16})
 }
 var objARInit = new ARInit()
 var tab3FirstClick = true //是否是在首页点击tab_3
@@ -468,7 +481,7 @@ var counter = 0 //recommend视频计数器
 var videoPosterH = 0
 var appWidth = 750
 curPlan = plans[Math.floor(Math.random() * 2)]
-curPlan = 'planA'
+// curPlan = 'planA'
 var currentEnv = judgeEnv() //获取运行环境
 //获取url参数
 var postId = objARInit._GetQueryString('postid') || 353809409  //1192802496
@@ -486,11 +499,11 @@ $(function () {
   getMoreLists()
   changeStyle()
   //初始化统计
-  // objARInit._send1_1('actorvideo', 'share-open', function () {
-  //   objARInit._send1_1('actorvideo', 'share-open-' + themeId, function () {
-  //     objARInit._send1_1('actorvideo', 'share-open-' + curPlan, function () {})
-  //   })
-  // })
+  objARInit._send1_1('actorvideo', 'share-open', function () {
+    objARInit._send1_1('actorvideo', 'share-open-' + themeId, function () {
+      objARInit._send1_1('actorvideo', 'share-open-' + curPlan, function () {})
+    })
+  })
   if(currentEnv.pc){
     //pc
     import('hls.js')
