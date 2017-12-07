@@ -168,7 +168,7 @@ body{background-color: #000;}
   margin:auto;
   background: url("../imgs/play@2x.png") 0 0/100% 100%;
 }
-.more_list .plan_a div:after {
+.more_list.plan_a li div:after {
   height:30.5%;
 }
 .recommend_list li span, .more_list li span, .recommend_list_all li span {
@@ -190,7 +190,7 @@ body{background-color: #000;}
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.more_list .plan_a span {
+.more_list.plan_a li span {
   position: absolute;
   bottom:0;
   height: 60px;

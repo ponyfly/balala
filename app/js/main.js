@@ -53,50 +53,28 @@ function toAppStore() {
   window.location.href = curPlan === 'planA' ? "http://a.app.qq.com/o/simple.jsp?pkgname=cn.j.hers&ckey=CK1381936452665" : "http://a.app.qq.com/o/simple.jsp?pkgname=cn.j.hers&ckey=CK1334936400029"
 }
 /**
- * 获取当前剧本图片
+ * 获取当前播放视频的剧本信息
  */
 function setCurrentOpera(curThemePic, curThemeName) {
   $('.current_opera_img').attr({src: curThemePic})
   $('.current_opera_title').text(curThemeName)
 }
 /**
- * 获取视频列表页
+ * 获取推荐视频列表
  */
-function getRecommendLists() {
-  var recommends = [
-    {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 16},
-    {id: 1192370251, title: "我们都是小仙女~你能找到乱入的糙汉子吗？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 25},
-    {id: 1192328686, title: "人真的有灵魂吗？谁能帮我解释下这个现象？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 28},
-    {id: 1203977419, title: "我爱洗澡皮肤好好~里面有美人出浴图哦~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 29}
-  ]
-  var recommendDoms = $('.recommend_list').find('li')
-  for(var i = 0,len = recommends.length; i < len; i++){
-    var recommendDom = recommendDoms[i]
-    $(recommendDom).data({"video-src": recommends[i].videoSrc, 'theme-id': recommends[i].themeId})
-    $(recommendDom).find("span").text(recommends[i].title)
-  }
+function getRecommendVideos() {
+  let arrs = []
+  recommendVideos.forEach((rv, i) => {
+    let $li = $('<li data-video-src="' + rv.videoSrc + '" data-theme-id="' + rv.themeId + '"><div><img src="'+ require('../imgs/userposter'+ (i + 1) +'.png') +'" alt=""></div>' + '<span>' + rv.title + '</span></li>')
+    arrs.push($li)
+  })
+  $('.tab_4 .recommend_list').append(arrs.slice(0,4))
+  $('.tab_5 .more_list').append(arrs.slice(4))
 }
 /**
- * 获取视频列表二
+ * 获取剧本列表
  */
-function getMoreLists() {
-  var recommends = [
-    {id: 1210804012, title: "BOOM~睡什么睡，跟我一起嗨起来~~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 24},
-    {id: 1207083505, title: "女孩子花点钱怎么了？为啥不让买包包？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 36},
-    {id: 1209339072, title: "Baby想我就多看一眼，么么哒~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 26},
-    {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 21}
-  ]
-  var recommendDoms = $('.more_list').find('li')
-  for (var i = 0,len = recommends.length; i < len; i++) {
-    var recommendDom = recommendDoms[i]
-    $(recommendDom).data({"video-src": recommends[i].videoSrc, 'theme-id': recommends[i].themeId})
-    $(recommendDom).find("span").text(recommends[i].title)
-  }
-}
-/**
- * 获取视频列表三
- */
-function getAllLists() {
+function getRecommendOperas() {
   var operas = ["爱你","灵魂出窍","波斯猫","床照","魅力女主播","天竺少女", "皇上驾崩", "贵妃醉酒"]
   var $lis = []
   for(var i = 0; i < 8; i++) {
@@ -394,7 +372,7 @@ function changeStyle() {
   oImg.onload = function () {
     if(curPlan === 'planB') {
       $('.tab_5 .current_opera_wrapper').remove()
-      $('.tab_5 .more_list li').removeClass('plan_a')
+      $('.tab_5 .more_list.plan_a').removeClass('plan_a')
       $('.more_list li div').css({height: 'auto'})
     }
     $('.tab_6 .recommend_title').remove()
@@ -423,7 +401,7 @@ function scalePcPage() {
     $('.current_opera').css({width: scale * $('.current_opera').width(), top: scale * 45, left: scale * 23})
     $('.current_opera_title').css({height: scale * 45, 'line-height': scale * 45 + 'px', 'font-size': 14})
     $('.more_title').css({height: 50, 'line-height': '50px', 'font-size': 16})
-    $('.more_list .plan_a span').css({height: scale * 60, 'line-height': scale * 60 + 'px'})
+    $('.more_list.plan_a li span').css({height: scale * 60, 'line-height': scale * 60 + 'px'})
   }
   $('.tab_6>img').eq(0).css({width: '100%'})
   $('.tab_6 .download').css({position:'absolute', width: '100%'})
@@ -452,21 +430,34 @@ function getVideoInfo() {
     }
   })
 }
-var objARInit = new ARInit()
-var tab3FirstClick = true //是否是在首页点击tab_3
-var initPlayer = true //是否开始播放
-var isUserVideo = true //是否是用户video
-var curRecommendId = null //当前点击的推荐video的Id
-var plans = ['planA', 'planB', 'planC', 'planD'] //可选方案
-var recommendOperas = ['灵魂出窍', '看我有多美', 'BOYS', '我爱洗澡', '不自觉就抖起来了', '女孩子花点钱怎么了', '爱你', '波斯猫']
-var curPlan = null //当前方案
-var videoPosterH = 0
-var appWidth = 750
+
+const objARInit = new ARInit()
+const currentEnv = judgeEnv() //获取运行环境
+const appWidth = 750
+const plans = ['planA', 'planB'] //可选方案
+const recommendVideos = [
+  {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 16},
+  {id: 1192370251, title: "我们都是小仙女~你能找到乱入的糙汉子吗？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 25},
+  {id: 1192328686, title: "人真的有灵魂吗？谁能帮我解释下这个现象？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 28},
+  {id: 1203977419, title: "我爱洗澡皮肤好好~里面有美人出浴图哦~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 29},
+  {id: 1210804012, title: "BOOM~睡什么睡，跟我一起嗨起来~~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 24},
+  {id: 1207083505, title: "女孩子花点钱怎么了？为啥不让买包包？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 36},
+  {id: 1209339072, title: "Baby想我就多看一眼，么么哒~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 26},
+  {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 21}
+]
+const recommendOperas = ['灵魂出窍', '看我有多美', 'BOYS', '我爱洗澡', '不自觉就抖起来了', '女孩子花点钱怎么了', '爱你', '波斯猫']
+const worksId = objARInit._GetQueryString('worksId') || 60046
+
+let videoPosterH = 0
+let curPlan = null //当前方案
+let tab3FirstClick = true //是否是在首页点击tab_3
+let initPlayer = true //是否开始播放
+let isUserVideo = true //是否是用户video
+let curRecommendId = null //当前点击的推荐video的Id
+
 curPlan = plans[Math.floor(Math.random() * 2)]
 curPlan = 'planA'
-var currentEnv = judgeEnv() //获取运行环境
 //获取url参数
-var worksId = objARInit._GetQueryString('worksId') || 60046
 getVideoInfo()
 
 var videoUrl = ''  || "https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4"
@@ -482,8 +473,7 @@ $(function () {
   var media = document.getElementById('media')
   //设置海报poster和video src
   $('.poster').attr('src', imgUrl)
-  getRecommendLists()
-  getMoreLists()
+  getRecommendVideos()
   changeStyle()
   //初始化统计
   /*objARInit._send1_1('actorvideo', 'share-open', function () {
@@ -527,5 +517,5 @@ $(function () {
   }
   addEvent()
   pushHistroy()
-  getAllLists()
+  getRecommendOperas()
 })
