@@ -55,37 +55,25 @@ function toAppStore() {
 /**
  * 获取当前剧本图片
  */
-function getCurrentOpera() {
-  $.ajax({
-    url: "https://mobileapi.j.cn/?method=dynamicItem&id=" + curThemeId,
-    type: 'GET',
-    success: function (res) {
-      var operaImg = res.imgUrl
-      var operaTitle = res.title
-      $('.current_opera_img').attr({src: operaImg})
-      $('.current_opera_title').text(operaTitle)
-    },
-    error: function (err) {
-      console.log(err);
-    }
-  })
+function setCurrentOpera(curThemePic, curThemeName) {
+  $('.current_opera_img').attr({src: curThemePic})
+  $('.current_opera_title').text(curThemeName)
 }
 /**
  * 获取视频列表页
  */
 function getRecommendLists() {
   var recommends = [
-    {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？"},
-    {id: 1192370251, title: "我们都是小仙女~你能找到乱入的糙汉子吗？"},
-    {id: 1192328686, title: "人真的有灵魂吗？谁能帮我解释下这个现象？"},
-    {id: 1203977419, title: "我爱洗澡皮肤好好~里面有美人出浴图哦~"}
+    {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 16},
+    {id: 1192370251, title: "我们都是小仙女~你能找到乱入的糙汉子吗？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 25},
+    {id: 1192328686, title: "人真的有灵魂吗？谁能帮我解释下这个现象？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 28},
+    {id: 1203977419, title: "我爱洗澡皮肤好好~里面有美人出浴图哦~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 29}
   ]
   var recommendDoms = $('.recommend_list').find('li')
   for(var i = 0,len = recommends.length; i < len; i++){
     var recommendDom = recommendDoms[i]
-    var id = recommends[i].id
-    var title = recommends[i].title
-    getRecommendItem($(recommendDom), id, title)
+    $(recommendDom).data({"video-src": recommends[i].videoSrc, 'theme-id': recommends[i].themeId})
+    $(recommendDom).find("span").text(recommends[i].title)
   }
 }
 /**
@@ -93,22 +81,17 @@ function getRecommendLists() {
  */
 function getMoreLists() {
   var recommends = [
-    {id: 1210804012, title: "BOOM~睡什么睡，跟我一起嗨起来~~"},
-    {id: 1207083505, title: "女孩子花点钱怎么了？为啥不让买包包？"},
-    {id: 1209339072, title: "Baby想我就多看一眼，么么哒~"},
-    {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？"}
+    {id: 1210804012, title: "BOOM~睡什么睡，跟我一起嗨起来~~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 24},
+    {id: 1207083505, title: "女孩子花点钱怎么了？为啥不让买包包？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 36},
+    {id: 1209339072, title: "Baby想我就多看一眼，么么哒~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 26},
+    {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 21}
   ]
   var recommendDoms = $('.more_list').find('li')
   for (var i = 0,len = recommends.length; i < len; i++) {
     var recommendDom = recommendDoms[i]
-    var id = recommends[i].id
-    var title = recommends[i].title
-    getRecommendItem($(recommendDom), id, title)
+    $(recommendDom).data({"video-src": recommends[i].videoSrc, 'theme-id': recommends[i].themeId})
+    $(recommendDom).find("span").text(recommends[i].title)
   }
-  //推断:点击tab_3的时候curThemeId=themeId,执行了getCurrentOpera(),所以此处不需要再次获取
-  // if(curPlan === 'planA') {
-  //   getCurrentOpera()
-  // }
 }
 /**
  * 获取视频列表三
@@ -121,34 +104,6 @@ function getAllLists() {
     $lis.push($li)
   }
   $('.tab_6 .recommend_list_all').append($lis)
-}
-/**
- * 根据id获取视频相关信息
- * @param ele 绑定元素
- * @param id  视频id
- * @param title 视频title
- */
-function getRecommendItem(ele, id, title)   {
-  $.ajax({
-    url: "https://bbs.j.cn/api/gameEntryDetail?gameEntryId="+id+"&v=6.1.1",
-    type: 'GET',
-    dataType: 'jsonp',
-    success: function (res) {
-      var posterSrc = res.gameEntry.video.thumbPic
-      var videoSrc = res.gameEntry.video.url
-      ele.data({"poster-src": posterSrc, "video-src": videoSrc})
-      ele.find("span").text(title)
-    },
-    error: function (err) {
-      console.log(err.message);
-    },
-    complete: function () {
-      counter ++
-      if(counter === 8) {
-        getAllLists()
-      }
-    }
-  })
 }
 /**
  * 添加事件
@@ -241,8 +196,10 @@ function addEvent() {
         }else {
           $("#media").attr({'src': videoUrl})
           curThemeId = themeId
-          getCurrentOpera()
+          curThemePic = themePic 
+          curThemeName = themeName
         }
+        setCurrentOpera(curThemePic, curThemeName)
         isUserVideo = true
       } else {
         isUserVideo = false
@@ -326,11 +283,13 @@ function addEvent() {
       }
       curRecommendId = hotId
       $('.tab_3').triggerHandler('click')
-      curThemeId = themeIds[curRecommendId - 1]
-      getCurrentOpera()
+      curThemeId = $(this).data('theme-id')
+      curThemePic = require('../imgs/rec-'+ curThemeId +'.png')
+      curThemeName = recommendOperas[hotId - 1]
+      setCurrentOpera(curThemePic, curThemeName)
       /*点击推荐视频发送id 1x1*/
       // alert('hot-' + hotId + '-planA')
-      objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
+      // objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
     })
     /*点击推荐视频列表二*/
     $('.more_list').on('click', 'li', function () {
@@ -347,27 +306,29 @@ function addEvent() {
       $('.tab_5').hide()
       curRecommendId = hotId
       isUserVideo = false
-      curThemeId = themeIds[curRecommendId - 1]
-      getCurrentOpera()
+      curThemeId = $(this).data('theme-id')
+      curThemePic = require('../imgs/rec-'+ curThemeId +'.png')
+      curThemeName = recommendOperas[hotId - 1]
+      setCurrentOpera(curThemePic, curThemeName)
       media.play()
       /*点击推荐视频发送id 1x1*/
       // alert('hot-' + hotId + '-planA')
-      objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
+      // objARInit._send1_1('actorvideo', 'hot-' + hotId + '-planA', function () {})
     })
     /*点击推荐视频列表三*/
     $('.recommend_list_all').on('click', 'li', function () {
       var hotId = $('.recommend_list_all li').index(this) + 1
       // alert('back-' + curPlan + '-hot-' + hotId)
-      objARInit._send1_1('actorvideo', 'download', function () {
-        objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
-          objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
-            objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {
-              console.log(hotId);
-              toAppStore()
-            })
-          })
-        })
-      })
+      // objARInit._send1_1('actorvideo', 'download', function () {
+      //   objARInit._send1_1('actorvideo', 'download-' + themeId, function () {
+      //     objARInit._send1_1('actorvideo', 'download-' + curPlan, function () {
+      //       objARInit._send1_1('actorvideo', 'back-' + curPlan + '-hot-' + hotId, function () {
+      //         console.log(hotId);
+      //         toAppStore()
+      //       })
+      //     })
+      //   })
+      // })
     })
   } else {
     $('.recommend_list').on('click', 'li', function () {
@@ -421,7 +382,7 @@ function addEvent() {
     $('.tab_5').hide()
     media.play()
     // alert('repeat-' + curPlan)
-    objARInit._send1_1('actorvideo', 'repeat-' + curPlan, function () {})
+    // objARInit._send1_1('actorvideo', 'repeat-' + curPlan, function () {})
   })
 }
 /**
@@ -462,34 +423,60 @@ function scalePcPage() {
     $('.current_opera').css({width: scale * $('.current_opera').width(), top: scale * 45, left: scale * 23})
     $('.current_opera_title').css({height: scale * 45, 'line-height': scale * 45 + 'px', 'font-size': 14})
     $('.more_title').css({height: 50, 'line-height': '50px', 'font-size': 16})
-    $('.more_list li div').css({height: w * 0.41})
     $('.more_list .plan_a span').css({height: scale * 60, 'line-height': scale * 60 + 'px'})
   }
   $('.tab_6>img').eq(0).css({width: '100%'})
   $('.tab_6 .download').css({position:'absolute', width: '100%'})
   $('.recommend_list_all li span').css({'line-height': '20px', 'font-size': 16})
 }
+/**
+ *
+ * @type {ARInit}
+ */
+function getVideoInfo() {
+  $.ajax({
+    url: 'http://114.112.164.36:41080/api/worksDetail',
+    data: {worksId},
+    type: 'POST',
+    dataType: 'json',
+    success: function (res) {
+      console.log(res);
+      videoUrl = res.works.shareInfo.url
+      imgUrl = res.works.shareInfo.picUrl
+      themeId = res.works.scenario.id
+      themeName = res.works.scenario.name
+      themePic = res.works.scenario.coverUrl
+    },
+    error: function (err) {
+      console.log(err.message);
+    }
+  })
+}
 var objARInit = new ARInit()
 var tab3FirstClick = true //是否是在首页点击tab_3
 var initPlayer = true //是否开始播放
 var isUserVideo = true //是否是用户video
 var curRecommendId = null //当前点击的推荐video的Id
-var themeIds = [16, 25, 28, 29, 24, 36, 26, 21]
 var plans = ['planA', 'planB', 'planC', 'planD'] //可选方案
+var recommendOperas = ['灵魂出窍', '看我有多美', 'BOYS', '我爱洗澡', '不自觉就抖起来了', '女孩子花点钱怎么了', '爱你', '波斯猫']
 var curPlan = null //当前方案
-var counter = 0 //recommend视频计数器
 var videoPosterH = 0
 var appWidth = 750
 curPlan = plans[Math.floor(Math.random() * 2)]
-// curPlan = 'planA'
+curPlan = 'planA'
 var currentEnv = judgeEnv() //获取运行环境
 //获取url参数
-var postId = objARInit._GetQueryString('postid') || 353809409  //1192802496
-var videoUrl = objARInit._GetQueryString('videoUrl') ||  "https://video1.j.cn/video/forum/171031/2039/cf88d0984abf4223.m3u8"
-var imgUrl = objARInit._GetQueryString('imgUrl') || "https://static3.j.cn/img/testforum/171103/1803/aa652fd5ccef462f.jpg"
-var themeId = objARInit._GetQueryString('themeId') || 40
-var themeName = objARInit._GetQueryString('themeName')
+var worksId = objARInit._GetQueryString('worksId') || 60046
+getVideoInfo()
+
+var videoUrl = ''  || "https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4"
+var imgUrl = '' || "https://static3.j.cn/img/forum/171130/2249/5e3084219b684fd5.jpg"
+var themeId = '' || 22
+var themeName = '' || 'name1'
+var themePic = '' || 'http://ozv2s2gcd.bkt.clouddn.com/img/snap/171201/1605/0c94e13c91284e0f.png'
 var curThemeId = themeId
+var curThemePic = themePic
+var curThemeName = themeName
 
 $(function () {
   var media = document.getElementById('media')
@@ -499,11 +486,11 @@ $(function () {
   getMoreLists()
   changeStyle()
   //初始化统计
-  objARInit._send1_1('actorvideo', 'share-open', function () {
+  /*objARInit._send1_1('actorvideo', 'share-open', function () {
     objARInit._send1_1('actorvideo', 'share-open-' + themeId, function () {
       objARInit._send1_1('actorvideo', 'share-open-' + curPlan, function () {})
     })
-  })
+  })*/
   if(currentEnv.pc){
     //pc
     import('hls.js')
@@ -518,9 +505,6 @@ $(function () {
     //mobile
     if(currentEnv.android) {
       if(currentEnv.weixin || currentEnv.qq){
-        if(curPlan === 'planA'){
-          $('.more_list li div').css({height: appWidth * 0.41})
-        }
         //微信全屏的时候设置推荐列表距离顶端距离
         if (curPlan === 'planB') {
           $('.tab_5').css({'padding-top': 64})
@@ -531,6 +515,9 @@ $(function () {
       $('.tab_6 .recommend_list_all').css({'padding-bottom': 120})
     }
   }
+  if(curPlan === 'planA'){
+    $('.more_list li div').css({height: appWidth * 0.41})
+  }
   window.onload = function () {
     $('#app').show()
     if(currentEnv.pc){
@@ -540,4 +527,5 @@ $(function () {
   }
   addEvent()
   pushHistroy()
+  getAllLists()
 })
