@@ -20,7 +20,7 @@ function lazyLoad(imgs) {
   })
   ;[].every.call(imgs, function (img) {
     return !img.getAttribute('data-src')
-  }) && (window.removeEventListener('scroll', lazyLoad, false))
+  }) && ($(window).off('scroll'))
 }
 /**
  * 判断运行环境
@@ -173,6 +173,13 @@ function addEvent() {
     }
     $('.tab_6').siblings().hide()
     $('.tab_6').show()
+    // recommendImgs = $('.recommend_list_all li div img')
+    // var $events = $._data(window,'events')
+    // if ($events || $events['scroll']) {
+    //   $(window).off('scroll')
+    // }
+    // lazyLoad(recommendImgs)
+    // $(window).on('scroll', lazyLoad.bind(null, recommendImgs))
   })
   /*点击download*/
   $('.tab_1').on('click', function () {
@@ -292,10 +299,12 @@ function addEvent() {
       if(curPlan === 'planA') {
         $('.tab_1').css({'z-index': 26})
       }
-      $('.tab_1').show().addClass('bounceInUp')
-      setTimeout(function () {
-        $('.tab_1').removeClass('bounceInUp')
-      },3000)
+      if(!currentEnv.pc) {
+        $('.tab_1').show().addClass('bounceInUp')
+        setTimeout(function () {
+          $('.tab_1').removeClass('bounceInUp')
+        },3000)
+      }
       initPlayer = false
     }
     $('.loader').css({visibility: 'hidden'})
@@ -470,6 +479,18 @@ function scalePcPage() {
   $('.line').height(10)
   $(".recommend_list li div").css({height:215,"min-height":"auto"})
   $('.loader').css({position:'absolute',width: 50, height: 50})
+  if(curPlan === 'planA') {
+    $('.current_opera_wrapper').css({height: scale * $('.current_opera_wrapper').height()})
+    $('.current_opera').css({width: scale * $('.current_opera').width(), top: scale * 45, left: scale * 23})
+    $('.current_opera_title').css({height: scale * 45, 'line-height': scale * 45 + 'px', 'font-size': 14})
+    $('.more_title').css({height: 50, 'line-height': '50px', 'font-size': 16})
+    $('.more_list li div').css({height: w * 0.41})
+    $('.more_list .plan_a span').css({height: scale * 60, 'line-height': scale * 60 + 'px'})
+  }
+  $('.recommend_list li img').add('.recommend_list_all li img').css({'min-height': 'auto'})
+  $('.tab_6>img').eq(0).css({width: '100%'})
+  $('.tab_6 .download').css({position:'absolute', width: '100%'})
+  $('.recommend_list_all li span').css({'line-height': '20px', 'font-size': 16})
 }
 var objARInit = new ARInit()
 var tab3FirstClick = true //是否是在首页点击tab_3
