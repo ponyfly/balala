@@ -156,6 +156,9 @@ body{background-color: #000;}
   overflow: hidden;
   border-radius: 3%;
 }
+.more_list.plan_a li div {
+  height: 307px;
+}
 .recommend_list li div:after, .more_list li div:after, .recommend_list_all li div:after {
   content: '';
   position: absolute;
