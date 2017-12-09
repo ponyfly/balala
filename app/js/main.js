@@ -180,10 +180,10 @@ function addEvent() {
           objARInit.hls.attachMedia(media)
         }else {
           $("#media").attr({'src': videoUrl})
-          curThemeId = themeId
-          curThemePic = themePic 
-          curThemeName = themeName
         }
+        curThemeId = themeId
+        curThemePic = themePic
+        curThemeName = themeName
         setCurrentOpera(curThemePic, curThemeName)
         isUserVideo = true
       } else {
@@ -420,7 +420,7 @@ function scalePcPage() {
 function getVideoInfo(callback) {
   $.ajax({
     // url: 'http://114.112.164.36:41080/api/worksShareDetail',
-    url: 'http://192.168.2.198:3002/api/worksShareDetail',
+    url: 'http://'+ location.hostname +':3002/api/worksShareDetail',
     data: {worksId},
     type: 'POST',
     dataType: 'json',
@@ -521,7 +521,7 @@ let curThemePic = themePic  //方案A当前播放视频对应的剧本封面
 let curThemeName = themeName  //方案A当前播放视频对应的剧本名字
 
 curPlan = plans[Math.floor(Math.random() * 2)] //当前使用的方案
-curPlan = 'planB'
+curPlan = 'planA'
 
 //initPage
 initPage()
