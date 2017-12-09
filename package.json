@@ -13,6 +13,7 @@
     "babel-plugin-dynamic-import-webpack": "^1.0.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "body-parser": "^1.18.2",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.2.0",
     "css-loader": "^0.28.7",

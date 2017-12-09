@@ -89,7 +89,7 @@ function getRecommendOperas() {
 function addEvent() {
   var media = document.getElementById('media')
   $(window).on('popstate', function () {
-    if(currentEnv.iphone) {
+    if(currentEnv.iphone || currentEnv.pc) {
       media.pause()
     }
     $('.tab_6').siblings().hide()
@@ -175,12 +175,7 @@ function addEvent() {
     if(tab3FirstClick === true) {
       var tab1H = $('.tab_1').height()
       if(!e.isTrigger) {
-        if(currentEnv.pc && objARInit.hls){
-          objARInit.hls.loadSource(videoUrl)
-          objARInit.hls.attachMedia(media)
-        }else {
-          $("#media").attr({'src': videoUrl})
-        }
+        $("#media").attr({'src': videoUrl})
         curThemeId = themeId
         curThemePic = themePic
         curThemeName = themeName
@@ -258,14 +253,7 @@ function addEvent() {
     /*点击推荐视频列表一*/
     $('.recommend_list').on('click', 'li', function () {
       var hotId = $('.recommend_list li').index(this) + 1
-      if(currentEnv.pc){
-        if(objARInit.hls){
-          objARInit.hls.loadSource(recommendVideos[hotId - 1].videoSrc)
-          objARInit.hls.attachMedia(media)
-        }
-      }else{
-        $("#media").attr({src:recommendVideos[hotId - 1].videoSrc})
-      }
+      $("#media").attr({src:recommendVideos[hotId - 1].videoSrc})
       curRecommendId = hotId
       $('.tab_3').triggerHandler('click')
       curThemeId = recommendVideos[hotId - 1].themeId
@@ -280,14 +268,7 @@ function addEvent() {
     $('.more_list').on('click', 'li', function () {
       var hotId = $('.more_list li').index(this) + 5
       $('#media').css({opacity: 0})
-      if(currentEnv.pc){
-        if(objARInit.hls){
-          objARInit.hls.loadSource(recommendVideos[hotId - 1].videoSrc)
-          objARInit.hls.attachMedia(media)
-        }
-      }else{
-        $("#media").attr({src:recommendVideos[hotId - 1].videoSrc})
-      }
+      $("#media").attr({src:recommendVideos[hotId - 1].videoSrc})
       $('.tab_5').hide()
       curRecommendId = hotId
       isUserVideo = false
@@ -445,52 +426,39 @@ function getVideoInfo(callback) {
  * 初始化
  */
 function initPage(){
-  //初始化统计
-  /*objARInit._send1_1('actorvideo', 'share-open', function () {
-    objARInit._send1_1('actorvideo', 'share-open-' + themeId, function () {
-      objARInit._send1_1('actorvideo', 'share-open-' + curPlan, function () {})
-    })
-  })*/
-  var media = document.getElementById('media')
   getVideoInfo(function () {
     $('.poster').attr('src', imgUrl)
+    //初始化统计
+    /*objARInit._send1_1('actorvideo', 'share-open', function () {
+      objARInit._send1_1('actorvideo', 'share-open-' + themeId, function () {
+        objARInit._send1_1('actorvideo', 'share-open-' + curPlan, function () {})
+      })
+    })*/
   })
   getRecommendVideos()
   getRecommendOperas()
   changeStyle()
   addEvent()
   pushHistroy()
-  if(currentEnv.pc){
-    //pc
-    import('hls.js')
-      .then(function (Hls) {
-        if(Hls.isSupported()) {
-          objARInit.hls = new Hls()
-          objARInit.hls.loadSource(videoUrl)
-          objARInit.hls.attachMedia(media)
-        }
-      })
-  }else{
-    //mobile
-    if(currentEnv.android) {
-      if(currentEnv.weixin || currentEnv.qq){
-        //微信全屏的时候设置推荐列表距离顶端距离
-        if (curPlan === 'planB') {
-          $('.tab_5').css({'padding-top': 64})
-        }
+  //mobile
+  if(currentEnv.android) {
+    if(currentEnv.weixin || currentEnv.qq){
+      //微信全屏的时候设置推荐列表距离顶端距离
+      if (curPlan === 'planB') {
+        $('.tab_5').css({'padding-top': 64})
       }
     }
-    if(currentEnv.iphone){
-      $('.tab_6 .recommend_list_all').css({'padding-bottom': 120})
-    }
   }
-  // if(curPlan === 'planA'){
-  //   $('.more_list li div').css({height: appWidth * 0.41})
-  // }
+  if(currentEnv.iphone){
+    $('.tab_6 .recommend_list_all').css({'padding-bottom': 120})
+  }
+  if(curPlan === 'planA'){
+    $('.more_list li div').css({height: appWidth * 0.41})
+  }
 }
 const objARInit = new ARInit()
 const currentEnv = judgeEnv() //获取运行环境
-const appWidth = 750
+const appWidth = currentEnv.pc ? 375 : 750
 const plans = ['planA', 'planB'] //可选方案
 const recommendVideos = [
   {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 16, themeName: "看我有多美"},
@@ -521,7 +489,7 @@ let curThemePic = themePic  //方案A当前播放视频对应的剧本封面
 let curThemeName = themeName  //方案A当前播放视频对应的剧本名字
 
 curPlan = plans[Math.floor(Math.random() * 2)] //当前使用的方案
-curPlan = 'planA'
+curPlan = 'planB'
 
 //initPage
 initPage()

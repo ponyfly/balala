@@ -51,6 +51,7 @@ const data = {
   }
 }
 router.post('/worksShareDetail', function (req, res, next) {
+  console.log(req.body);
   res.header("Access-Control-Allow-Origin", "*");
   res.send(data)
   next()
