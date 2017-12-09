@@ -12,7 +12,7 @@ module.exports = merge(common, {
   output: {
     path: resolve(__dirname, '..', 'dist'),
     filename: 'static/js/[name]-[chunkhash:8].js',
-    publicPath: 'https://image1.guang.j.cn/images/css/static/xijingtest/'
+    publicPath: '/'
   },
   devtool: 'source-map',
   module: {
@@ -31,7 +31,7 @@ module.exports = merge(common, {
               loader: 'postcss-loader'
             }
           ],
-          publicPath: 'https://image1.guang.j.cn/images/css/static/xijingtest/',
+          publicPath: '/',
         })
       }
     ]

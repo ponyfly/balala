@@ -489,7 +489,7 @@ let curThemePic = themePic  //方案A当前播放视频对应的剧本封面
 let curThemeName = themeName  //方案A当前播放视频对应的剧本名字
 
 curPlan = plans[Math.floor(Math.random() * 2)] //当前使用的方案
-curPlan = 'planB'
+curPlan = 'planA'
 
 //initPage
 initPage()
