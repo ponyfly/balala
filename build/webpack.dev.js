@@ -7,7 +7,11 @@ const os = require('os')
 let localhost  = ''
 try {
   const network = os.networkInterfaces()
-  localhost = network[Object.keys(network)[0]][1].address
+  if(Object.keys(network)[0] === 'WLAN') {
+    localhost = network[Object.keys(network)[0]][0].address
+  } else {
+    localhost = network[Object.keys(network)[0]][1].address
+  }
 } catch (e) {
   localhost = 'localhost'
 }
