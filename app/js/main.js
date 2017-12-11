@@ -185,8 +185,8 @@ function addEvent() {
         isUserVideo = false
       }
       $('.tab_1').add('.line').add('.tab_4').add('.poster').hide()
-      $('#media').css({"height": currentEnv.pc ? (videoPosterH - 1) : 'auto'})
-      $(this).add('.tab_2').height(currentEnv.pc ? videoPosterH - 33 : videoPosterH - tab1H)
+      $('.tab_2').add('#media').css({"height": currentEnv.pc ? (videoPosterH - 1) : 'auto'})
+      $(this).height(currentEnv.pc ? videoPosterH - 33 : videoPosterH - tab1H)
       $(this).add('#media').css({opacity: 0})
       $('.tab_1').css({position: "fixed", bottom: currentEnv.pc ? "auto" : 0, 'z-index':26})
       if(currentEnv.iphone) {
