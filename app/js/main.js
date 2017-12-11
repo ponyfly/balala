@@ -185,8 +185,8 @@ function addEvent() {
         isUserVideo = false
       }
       $('.tab_1').add('.line').add('.tab_4').add('.poster').hide()
-      $('.tab_2').add('#media').css({"height": currentEnv.pc ? (videoPosterH - 1) : 'auto'})
-      $(this).height(currentEnv.pc ? videoPosterH - 33 : videoPosterH - tab1H)
+      $('#media').css({"height": currentEnv.pc ? (videoPosterH - 1) : 'auto'})
+      $(this).add('.tab_2').height(currentEnv.pc ? videoPosterH - 33 : videoPosterH - tab1H)
       $(this).add('#media').css({opacity: 0})
       $('.tab_1').css({position: "fixed", bottom: currentEnv.pc ? "auto" : 0, 'z-index':26})
       if(currentEnv.iphone) {
@@ -409,17 +409,14 @@ function getVideoInfo(callback) {
       console.log(res);
       videoUrl = res.works.shareInfo.url
       imgUrl = res.works.shareInfo.picUrl
-      themeId = res.works.scenario.id
-      themeName = res.works.scenario.name
-      themePic = res.works.scenario.coverUrl
+      curThemeId = themeId = res.works.scenario.id
+      curThemeName= themeName = res.works.scenario.name
+      curThemePic = themePic = res.works.scenario.coverUrl
       callback && callback()
     },
     error(err) {
       console.log(err.message);
     },
-    complete() {
-      callback && callback()
-    }
   })
 }
 /**
@@ -484,9 +481,9 @@ let imgUrl = '' //|| "https://static3.j.cn/img/forum/171130/2249/5e3084219b684fd
 let themeId = '' //|| 22 //用户视频对应的剧本id
 let themePic = '' //|| 'http://ozv2s2gcd.bkt.clouddn.com/img/snap/171201/1605/0c94e13c91284e0f.png' //用户视频对应的剧本封面
 let themeName = '' //|| 'name1' //用户视频对应的剧本名字
-let curThemeId = themeId  //方案A当前播放视频对应的剧本id
-let curThemePic = themePic  //方案A当前播放视频对应的剧本封面
-let curThemeName = themeName  //方案A当前播放视频对应的剧本名字
+let curThemeId = ''  //方案A当前播放视频对应的剧本id
+let curThemePic = ''  //方案A当前播放视频对应的剧本封面
+let curThemeName = ''  //方案A当前播放视频对应的剧本名字
 
 curPlan = plans[Math.floor(Math.random() * 2)] //当前使用的方案
 curPlan = 'planA'
