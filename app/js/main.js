@@ -457,16 +457,16 @@ const currentEnv = judgeEnv() //获取运行环境
 const appWidth = currentEnv.pc ? 375 : 750
 // const plans = ['planA', 'planB'] //可选方案
 const recommendVideos = [
-  {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 16, themeName: "看我有多美"},
-  {id: 1192370251, title: "我们都是小仙女~你能找到乱入的糙汉子吗？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 25, themeName: "BOYS"},
-  {id: 1192328686, title: "人真的有灵魂吗？谁能帮我解释下这个现象？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 28, themeName: "灵魂出窍"},
-  {id: 1203977419, title: "我爱洗澡皮肤好好~里面有美人出浴图哦~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 29, themeName: "我爱洗澡"},
-  {id: 1210804012, title: "BOOM~睡什么睡，跟我一起嗨起来~~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 24, themeName: "不自觉就抖起来了"},
-  {id: 1207083505, title: "女孩子花点钱怎么了？为啥不让买包包？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 36, themeName: "女孩子花点钱怎么了"},
-  {id: 1209339072, title: "Baby想我就多看一眼，么么哒~", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 26, themeName: "爱你"},
-  {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？", videoSrc: 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4', themeId: 21, themeName: "波斯猫"}
+  {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？", videoSrc: 'https://video1.j.cn/video/forum/171110/1340/05351f92a7ae446b.m3u8', themeId: 16, themeName: "看我有多美"},
+  {id: 1192370251, title: "我们都是小仙女~你能找到乱入的糙汉子吗？", videoSrc: 'https://video1.j.cn/video/forum/171031/2039/cf88d0984abf4223.m3u8', themeId: 25, themeName: "BOYS"},
+  {id: 1192328686, title: "人真的有灵魂吗？谁能帮我解释下这个现象？", videoSrc: 'https://video1.j.cn/video/forum/171031/1959/9aae09e4d4e54a2c.m3u8', themeId: 28, themeName: "灵魂出窍"},
+  {id: 1203977419, title: "我爱洗澡皮肤好好~里面有美人出浴图哦~", videoSrc: 'https://video1.j.cn/video/forum/171113/1915/ed41555a0adb4011.m3u8', themeId: 29, themeName: "我爱洗澡"},
+  {id: 1210804012, title: "BOOM~睡什么睡，跟我一起嗨起来~~", videoSrc: 'https://video1.j.cn/video/forum/171121/1229/443a45292be54cae.m3u8', themeId: 24, themeName: "不自觉就抖起来了"},
+  {id: 1207083505, title: "女孩子花点钱怎么了？为啥不让买包包？", videoSrc: 'https://video1.j.cn/video/forum/171117/0740/b4635e7608bd460f.m3u8', themeId: 36, themeName: "女孩子花点钱怎么了"},
+  {id: 1209339072, title: "Baby想我就多看一眼，么么哒~", videoSrc: 'https://video1.j.cn/video/forum/171119/1844/346f599368ca441e.m3u8', themeId: 26, themeName: "爱你"},
+  {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？", videoSrc: 'https://video1.j.cn/video/forum/171120/1926/2908df4bd1b349cb.m3u8', themeId: 21, themeName: "波斯猫"}
 ]
-const worksId = objARInit._GetQueryString('worksId') || 60046
+const worksId = objARInit._GetQueryString('worksId') || 30011
 
 let videoPosterH = 0
 let curPlan = 'planA' //当前方案
