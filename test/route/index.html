@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    .box{  width: 100px;height: 100px;border: 1px solid greenyellow  }
+  </style>
+</head>
+<body>
+<ul>
+  <li><a href="#/">turn white</a></li>
+  <li><a href="#/blue">turn blue</a></li>
+  <li><a href="#/green">turn green</a></li>
+</ul>
+<div class="box"></div>
+<script>
+  var box = document.querySelector('.box')
+  function changeColor(color) {
+    box.style.cssText = 'background-color:' + color
+  }
+
+  function Router() {
+    this.routes = {}
+    this.currentUrl = ''
+  }
+  Router.prototype.route = function (path, callback) {
+    this.routes[path] = callback || function () {}
+  }
+  Router.prototype.refresh = function () {
+    this.currentUrl = location.hash.slice(1) || '/'
+    this.routes[this.currentUrl]()
+  }
+  Router.prototype.init = function () {
+    window.addEventListener('load', this.refresh.bind(this), false)
+    window.addEventListener('hashchange', this.refresh.bind(this), false)
+  }
+
+  var router = new Router()
+  router.route('/', function () {
+    changeColor('white')
+  })
+  router.route('/blue', function () {
+    changeColor('blue')
+  })
+  router.route('/green', function () {
+    changeColor('green')
+  })
+  console.log(router);
+  router.init()
+</script>
+</body>
+</html>
