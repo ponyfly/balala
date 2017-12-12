@@ -104,70 +104,70 @@ function addEvent() {
   })
   $('.tab_1').on('click', function () {
     // 下载总点击
-    objARInit._send1_1('balala', 'download', function () {
-      objARInit._send1_1('balala', 'download-' + curPlan, function () {
-        // 下载剧本统计
-        objARInit._send1_1('balala', 'download-' + themeId, function () {})
-      })
-    })
+    // objARInit._send1_1('balala', 'download', function () {
+    //   objARInit._send1_1('balala', 'download-' + curPlan, function () {
+    //     // 下载剧本统计
+    //     objARInit._send1_1('balala', 'download-' + themeId, function () {})
+    //   })
+    // })
     if(tab3FirstClick) {
       //在首页点击下载
       // alert('download-out-'+ curPlan)
-      objARInit._send1_1('balala', 'download-out-'+ curPlan, function () {
-        console.log('download-out-'+ curPlan);
-        toAppStore()
-      })
+      // objARInit._send1_1('balala', 'download-out-'+ curPlan, function () {
+      //   console.log('download-out-'+ curPlan);
+      //   toAppStore()
+      // })
     }else{
       if(isUserVideo) {
         // alert('download-user-' + curPlan)
         //用户视频触发下载
-        objARInit._send1_1('balala', 'download-user-' + curPlan, function () {
-          console.log('download-user-' + curPlan);
-          toAppStore()
-        })
+        // objARInit._send1_1('balala', 'download-user-' + curPlan, function () {
+        //   console.log('download-user-' + curPlan);
+        //   toAppStore()
+        // })
       } else {
         // alert('download-recommend' + curRecommendId + '-' + curPlan)
         //推荐视频触发下载
-         objARInit._send1_1('balala', 'download-recommend' + curRecommendId + '-' + curPlan, function () {
-           console.log('download-recommend' + curRecommendId + '-' + curPlan);
-           toAppStore()
-         })
+        //  objARInit._send1_1('balala', 'download-recommend' + curRecommendId + '-' + curPlan, function () {
+        //    console.log('download-recommend' + curRecommendId + '-' + curPlan);
+        //    toAppStore()
+        //  })
       }
     }
   })
   $('.current_opera_wrapper').on('click', function () {
-    objARInit._send1_1('balala', 'download', function () {
-      objARInit._send1_1('balala', 'download-' + curPlan, function () {
-        if(isUserVideo) {
-          objARInit._send1_1('balala', 'download-' + themeId, function () {
-            objARInit._send1_1('balala', 'download-user', function () {
-              // alert('download-user')
-              toAppStore()
-            })
-          })
-        }else {
-          objARInit._send1_1('balala', 'download-' + curThemeId, function () {
-            objARInit._send1_1('balala', 'download-recommend' + curRecommendId + '-drama', function () {
-              // alert('download-recommend' + curRecommendId + '-drama')
-              toAppStore()
-            })
-          })
-        }
-      })
-    })
+    // objARInit._send1_1('balala', 'download', function () {
+    //   objARInit._send1_1('balala', 'download-' + curPlan, function () {
+    //     if(isUserVideo) {
+    //       objARInit._send1_1('balala', 'download-' + themeId, function () {
+    //         objARInit._send1_1('balala', 'download-user', function () {
+    //           // alert('download-user')
+    //           toAppStore()
+    //         })
+    //       })
+    //     }else {
+    //       objARInit._send1_1('balala', 'download-' + curThemeId, function () {
+    //         objARInit._send1_1('balala', 'download-recommend' + curRecommendId + '-drama', function () {
+    //           // alert('download-recommend' + curRecommendId + '-drama')
+    //           toAppStore()
+    //         })
+    //       })
+    //     }
+    //   })
+    // })
   })
   $('.tab_6 .download').on('click', function () {
     // alert('download-back-'+ curPlan)
-    objARInit._send1_1('balala', 'download', function () {
-      objARInit._send1_1('balala', 'download-' + themeId, function () {
-        objARInit._send1_1('balala', 'download-' + curPlan, function () {
-          objARInit._send1_1('balala', 'download-back-'+ curPlan, function () {
-            console.log('download-back-'+ curPlan);
-            toAppStore()
-          })
-        })
-      })
-    })
+    // objARInit._send1_1('balala', 'download', function () {
+    //   objARInit._send1_1('balala', 'download-' + themeId, function () {
+    //     objARInit._send1_1('balala', 'download-' + curPlan, function () {
+    //       objARInit._send1_1('balala', 'download-back-'+ curPlan, function () {
+    //         console.log('download-back-'+ curPlan);
+    //         toAppStore()
+    //       })
+    //     })
+    //   })
+    // })
   })
   /*点击遮罩，控制播放与暂停*/
   $('.tab_3').on('click', function (e) {
@@ -262,7 +262,7 @@ function addEvent() {
       setCurrentOpera(curThemePic, curThemeName)
       /*点击推荐视频发送id 1x1*/
       // alert('hot-' + hotId + '-planA')
-      objARInit._send1_1('balala', 'hot-' + hotId + '-planA', function () {})
+      // objARInit._send1_1('balala', 'hot-' + hotId + '-planA', function () {})
     })
     /*点击推荐视频列表二*/
     $('.more_list').on('click', 'li', function () {
@@ -279,65 +279,65 @@ function addEvent() {
       media.play()
       /*点击推荐视频发送id 1x1*/
       // alert('hot-' + hotId + '-planA')
-      objARInit._send1_1('balala', 'hot-' + hotId + '-planA', function () {})
+      // objARInit._send1_1('balala', 'hot-' + hotId + '-planA', function () {})
     })
     /*点击推荐视频列表三*/
     $('.recommend_list_all').on('click', 'li', function () {
       var hotId = $('.recommend_list_all li').index(this) + 1
       // alert('back-' + curPlan + '-hot-' + hotId)
-      objARInit._send1_1('balala', 'download', function () {
-        objARInit._send1_1('balala', 'download-' + themeId, function () {
-          objARInit._send1_1('balala', 'download-' + curPlan, function () {
-            objARInit._send1_1('balala', 'back-' + curPlan + '-hot-' + hotId, function () {
-              console.log(hotId);
-              toAppStore()
-            })
-          })
-        })
-      })
+      // objARInit._send1_1('balala', 'download', function () {
+      //   objARInit._send1_1('balala', 'download-' + themeId, function () {
+      //     objARInit._send1_1('balala', 'download-' + curPlan, function () {
+      //       objARInit._send1_1('balala', 'back-' + curPlan + '-hot-' + hotId, function () {
+      //         console.log(hotId);
+      //         toAppStore()
+      //       })
+      //     })
+      //   })
+      // })
     })
   } else {
     $('.recommend_list').on('click', 'li', function () {
       var hotId = $('.recommend_list li').index(this) + 1
       // alert(curPlan + '-hot-' + hotId)
-      objARInit._send1_1('balala', 'download', function () {
-        objARInit._send1_1('balala', 'download-' + themeId, function () {
-          objARInit._send1_1('balala', 'download-' + curPlan, function () {
-            objARInit._send1_1('balala', curPlan + '-hot-' + hotId, function () {
-              console.log(hotId);
-              toAppStore()
-            })
-          })
-        })
-      })
+      // objARInit._send1_1('balala', 'download', function () {
+      //   objARInit._send1_1('balala', 'download-' + themeId, function () {
+      //     objARInit._send1_1('balala', 'download-' + curPlan, function () {
+      //       objARInit._send1_1('balala', curPlan + '-hot-' + hotId, function () {
+      //         console.log(hotId);
+      //         toAppStore()
+      //       })
+      //     })
+      //   })
+      // })
     })
     $('.more_list').on('click', 'li', function () {
       var hotId = $('.more_list li').index(this) + 5
       // alert(curPlan + '-hot-' + hotId)
-      objARInit._send1_1('balala', 'download', function () {
-        objARInit._send1_1('balala', 'download-' + themeId, function () {
-          objARInit._send1_1('balala', 'download-' + curPlan, function () {
-            objARInit._send1_1('balala', curPlan + '-hot-' + hotId, function () {
-              console.log(hotId);
-              toAppStore()
-            })
-          })
-        })
-      })
+      // objARInit._send1_1('balala', 'download', function () {
+      //   objARInit._send1_1('balala', 'download-' + themeId, function () {
+      //     objARInit._send1_1('balala', 'download-' + curPlan, function () {
+      //       objARInit._send1_1('balala', curPlan + '-hot-' + hotId, function () {
+      //         console.log(hotId);
+      //         toAppStore()
+      //       })
+      //     })
+      //   })
+      // })
     })
     $('.recommend_list_all').on('click', 'li', function () {
       var hotId = $('.recommend_list_all li').index(this) + 1
       // alert('back-' + curPlan + '-hot-' + hotId)
-      objARInit._send1_1('balala', 'download', function () {
-        objARInit._send1_1('balala', 'download-' + themeId, function () {
-          objARInit._send1_1('balala', 'download-' + curPlan, function () {
-            objARInit._send1_1('balala', 'back-' + curPlan + '-hot-' + hotId, function () {
-              console.log(hotId);
-              toAppStore()
-            })
-          })
-        })
-      })
+      // objARInit._send1_1('balala', 'download', function () {
+      //   objARInit._send1_1('balala', 'download-' + themeId, function () {
+      //     objARInit._send1_1('balala', 'download-' + curPlan, function () {
+      //       objARInit._send1_1('balala', 'back-' + curPlan + '-hot-' + hotId, function () {
+      //         console.log(hotId);
+      //         toAppStore()
+      //       })
+      //     })
+      //   })
+      // })
     })
   }
   /**
@@ -348,7 +348,7 @@ function addEvent() {
     $('.tab_5').hide()
     media.play()
     // alert('repeat-' + curPlan)
-    objARInit._send1_1('balala', 'repeat-' + curPlan, function () {})
+    // objARInit._send1_1('balala', 'repeat-' + curPlan, function () {})
   })
 }
 /**
@@ -425,11 +425,11 @@ function initPage(){
   getVideoInfo(function () {
     $('.poster').attr('src', imgUrl)
     //初始化统计
-    objARInit._send1_1('balala', 'share-open', function () {
-      objARInit._send1_1('balala', 'share-open-' + themeId, function () {
-        objARInit._send1_1('balala', 'share-open-' + curPlan, function () {})
-      })
-    })
+    // objARInit._send1_1('balala', 'share-open', function () {
+    //   objARInit._send1_1('balala', 'share-open-' + themeId, function () {
+    //     objARInit._send1_1('balala', 'share-open-' + curPlan, function () {})
+    //   })
+    // })
   })
   getRecommendVideos()
   getRecommendOperas()
