@@ -406,8 +406,8 @@ function getVideoInfo(callback) {
     data: '{"worksId": '+ worksId + '}',
     success(res) {
       console.log(res);
-      videoUrl = res.works.shareInfo.url
-      imgUrl = res.works.shareInfo.picUrl
+      videoUrl = res.works.movie.url
+      imgUrl = res.works.worksPic.url
       curThemeId = themeId = res.works.scenario.id
       curThemeName= themeName = res.works.scenario.name
       curThemePic = themePic = res.works.scenario.coverUrl
