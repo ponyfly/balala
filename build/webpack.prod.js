@@ -12,9 +12,9 @@ module.exports = merge(common, {
   output: {
     path: resolve(__dirname, '..', 'dist'),
     filename: 'static/js/[name]-[chunkhash:8].js',
-    publicPath: 'http://snapstatic.j.cn/sharetest/'
+    publicPath: 'http://snapstatic.j.cn/share/'
   },
-  devtool: 'source-map',
+  // devtool: 'source-map',
   module: {
     rules: [
       {
@@ -31,14 +31,14 @@ module.exports = merge(common, {
               loader: 'postcss-loader'
             }
           ],
-          publicPath: 'http://snapstatic.j.cn/sharetest/',
+          publicPath: 'http://snapstatic.j.cn/share/',
         })
       }
     ]
   },
   plugins: [
     new UglifyWebpackPlugin({
-      sourceMap: true,
+      // sourceMap: true,
       uglifyOptions: {
         compress: true,
         warnings: false

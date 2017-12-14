@@ -400,10 +400,11 @@ function scalePcPage() {
  */
 function getVideoInfo(callback) {
   $.ajax({
-    url: 'http://114.112.164.36:41080/api/worksShareDetail',
+    url: 'http://snaptest.j.cn/api/worksShareDetail',
     // url: 'http://'+ location.hostname +':3002/api/worksShareDetail',
     type: 'POST',
     data: '{"worksId": '+ worksId + '}',
+    // data: {worksId},
     success(res) {
       console.log(res);
       videoUrl = res.works.movie.url
@@ -466,7 +467,7 @@ const recommendVideos = [
   {id: 1209339072, title: "Baby想我就多看一眼，么么哒~", videoSrc: 'https://video1.j.cn/video/forum/171119/1844/346f599368ca441e.m3u8', themeId: 26, themeName: "爱你"},
   {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？", videoSrc: 'https://video1.j.cn/video/forum/171120/1926/2908df4bd1b349cb.m3u8', themeId: 21, themeName: "波斯猫"}
 ]
-const worksId = objARInit._GetQueryString('worksId') || 30011
+const worksId = objARInit._GetQueryString('id') || 30011
 
 let videoPosterH = 0
 let curPlan = 'planA' //当前方案
