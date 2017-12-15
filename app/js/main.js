@@ -400,7 +400,7 @@ function scalePcPage() {
  */
 function getVideoInfo(callback) {
   $.ajax({
-    url: 'http://snaptest.j.cn/api/worksShareDetail',
+    url: 'http://snap.j.cn/api/worksShareDetail',
     // url: 'http://'+ location.hostname +':3002/api/worksShareDetail',
     type: 'POST',
     data: '{"worksId": '+ worksId + '}',
