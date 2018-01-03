@@ -163,5 +163,34 @@ ARInit.prototype = {
     var cval = getCookie(name);
     if (cval != null)
       document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+  },
+  //生成用户jcn
+  _getJcn: function () {
+    var that = this;
+    //获取本地uuid
+    var get_uuid = localStorage.getItem('uuid') || that._getCookie('uuid');
+    var set_uuid = that._uuid();
+
+    function getUuid() {
+      if (get_uuid == null) {
+        if (window.localStorage) {
+          //写入localStorage
+          localStorage.setItem('uuid', set_uuid);
+        } else {
+          //写入cookie
+          that._setCookie('uuid', set_uuid);
+        }
+        return set_uuid
+      } else {
+        return get_uuid
+      }
+    }
+    //设置统计参数
+    var jcnappid = that._GetQueryString('jcnappid') == null ? getUuid() : that._GetQueryString('jcnappid'),
+      jcnuserid = that._GetQueryString('jcnuserid') == null ? getUuid() : that._GetQueryString('jcnuserid');
+    return {
+      jcnappid: jcnappid,
+      jcnuserid: jcnuserid
+    }
   }
 }

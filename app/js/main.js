@@ -7,6 +7,43 @@ import '../css/main.css'
 import wenan4 from '../imgs/wenan4.png'
 
 /**
+ * 统计点：发送播放请求
+ */
+
+function postCommonStats() {
+  const url = 'https://snap.j.cn/api/commonStats'
+  const {jcnappid, jcnuserid} = objARInit._getJcn()
+  const data = {
+    "itemId": worksId + "",
+    "action": "h5detail",
+    "target": objARInit._GetQueryString('jcntarget') || "",
+    "typeId": themeId + "",
+    "app": objARInit._GetQueryString('jcnapp') || "",
+    "from": "h5",
+    "clientEnv": {
+      "jcnappid": jcnappid + "",
+      "jcnuserid": jcnuserid + "",
+      "latitude": "0",
+      "longitude": "0",
+      "net": "",
+      "v": "0"
+    },
+    "userid": userId + ""
+  }
+  $.ajax({
+    url: url,
+    type: 'POST',
+    data: JSON.stringify(data),
+    success(res) {
+      console.log('success');
+    },
+    error(err) {
+      console.log(err.message);
+    }
+  })
+}
+
+/**
  * 判断运行环境
  * @returns {{}}
  */
@@ -171,6 +208,11 @@ function addEvent() {
   })
   /*点击遮罩，控制播放与暂停*/
   $('.tab_3').on('click', function (e) {
+    if(onceClick){
+      //发送post请求
+      postCommonStats()
+      onceClick = false
+    }
     var opacityVal = $(this).css('opacity')
     if(tab3FirstClick === true) {
       var tab1H = $('.tab_1').height()
@@ -399,19 +441,30 @@ function scalePcPage() {
  * 获取视频相关信息
  */
 function getVideoInfo(callback) {
+  let hostName = ''
+  switch (clientEnv) {
+    case 'test' :
+      hostName = 'snaptest.j.cn'
+      break
+    case 'pre' :
+      hostName = 'snappre.j.cn'
+      break
+    default :
+      hostName = 'snap.j.cn'
+  }
   $.ajax({
-    url: 'http://snap.j.cn/api/worksShareDetail',
+    url: 'https://'+ hostName +'/api/worksShareDetail',
     // url: 'http://'+ location.hostname +':3002/api/worksShareDetail',
     type: 'POST',
     data: '{"worksId": '+ worksId + '}',
     // data: {worksId},
     success(res) {
-      console.log(res);
-      videoUrl = res.works.movie.url
+      videoUrl = res.works.movie.waterMarkUrl || res.works.movie.url
       imgUrl = res.works.worksPic.url
       curThemeId = themeId = res.works.scenario.id
       curThemeName= themeName = res.works.scenario.name
       curThemePic = themePic = res.works.scenario.coverUrl
+      userId = res.works.user.id
       callback && callback()
     },
     error(err) {
@@ -427,9 +480,7 @@ function initPage(){
     $('.poster').attr('src', imgUrl)
     //初始化统计
     objARInit._send1_1('balala', 'share-open', function () {
-      objARInit._send1_1('balala', 'share-open-' + themeId, function () {
-        objARInit._send1_1('balala', 'share-open-' + curPlan, function () {})
-      })
+      objARInit._send1_1('balala', 'share-open-' + themeId, function () {})
     })
   })
   getRecommendVideos()
@@ -468,17 +519,20 @@ const recommendVideos = [
   {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？", videoSrc: 'https://video1.j.cn/video/forum/171120/1926/2908df4bd1b349cb.m3u8', themeId: 21, themeName: "波斯猫"}
 ]
 const worksId = objARInit._GetQueryString('id') || 30011
+const clientEnv = objARInit._GetQueryString('env') || 'pro'
 
+let userId = ''
 let videoPosterH = 0
 let curPlan = 'planA' //当前方案
 let tab3FirstClick = true //是否是在首页点击tab_3
 let initPlayer = true //是否开始播放
 let isUserVideo = true //是否是用户video
 let curRecommendId = null //当前点击的推荐video的Id
+let onceClick = true
 
 let videoUrl = ''  //|| "https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4" //用户视频播放地址
 let imgUrl = '' //|| "https://static3.j.cn/img/forum/171130/2249/5e3084219b684fd5.jpg" //用户视频封面
-let themeId = '' //|| 22 //用户视频对应的剧本id
+let themeId = '' || 0 //用户视频对应的剧本id
 let themePic = '' //|| 'http://ozv2s2gcd.bkt.clouddn.com/img/snap/171201/1605/0c94e13c91284e0f.png' //用户视频对应的剧本封面
 let themeName = '' //|| 'name1' //用户视频对应的剧本名字
 let curThemeId = ''  //方案A当前播放视频对应的剧本id
