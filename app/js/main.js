@@ -232,7 +232,7 @@ function addEvent() {
         $(this).css({'background-color': 'rgba(0,0,0,0)'})
       }
       $('.tab_1').add('.line').add('.tab_4').add('.poster').hide()
-      $('.tab_2').add('#media').css({"height": currentEnv.pc ? (videoPosterH - 1) : 'auto'})
+      $('.tab_2').add('#media').css({"height": currentEnv.pc ? '666px' : 'auto'})
       $(this).height(currentEnv.pc ? videoPosterH - 33 : videoPosterH - tab1H)
       $(this).add('#media').css({opacity: 0})
       $('.tab_1').css({position: "fixed", bottom: currentEnv.pc ? "auto" : 0, 'z-index':26})
