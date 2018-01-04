@@ -251,24 +251,24 @@ body{background-color: #000;}
 
   from {
     opacity: 0;
-    bottom:-3000px;
+    transform:translateY(3000px);
   }
 
   60% {
     opacity: 1;
-    bottom:120px;
+    transform:translateY(-120px);
   }
 
   75% {
-    bottom:-20px;
+    transform:translateY(20px);
   }
 
   90% {
-    bottom:5px;
+    transform:translateY(-5px);
   }
 
   to {
-    bottom:0;
+    transform:translateY(0);
   }
 }
 .bounceInUp {

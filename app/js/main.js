@@ -232,16 +232,14 @@ function addEvent() {
         $(this).css({'background-color': 'rgba(0,0,0,0)'})
       }
       $('.tab_1').add('.line').add('.tab_4').add('.poster').hide()
-      $('.tab_2').add('#media').css({"height": currentEnv.pc ? '666px' : 'auto'})
-      $(this).height(currentEnv.pc ? videoPosterH - 33 : videoPosterH - tab1H)
+      $('.tab_2').add('#media').css({"height": currentEnv.pc ? 666 : 'auto'})
+      $(this).height(currentEnv.pc ? 634 : videoPosterH - tab1H)
       $(this).add('#media').css({opacity: 0})
       $('.tab_1').css({position: "fixed", bottom: currentEnv.pc ? "auto" : 0, 'z-index':26})
-      if(currentEnv.iphone) {
-        $('.tab_1').show().addClass('bounceInUp')
-        setTimeout(function () {
-          $('.tab_1').removeClass('bounceInUp')
-        },3000)
-      }
+      $('.tab_1').show().addClass('bounceInUp')
+      setTimeout(function () {
+        $('.tab_1').removeClass('bounceInUp')
+      },3000)
       media.play()
       tab3FirstClick = false
     } else {
