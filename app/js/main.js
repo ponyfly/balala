@@ -228,6 +228,9 @@ function addEvent() {
       } else {
         isUserVideo = false
       }
+      if(currentEnv.pc) {
+        $(this).css({'background-color': 'rgba(0,0,0,0)'})
+      }
       $('.tab_1').add('.line').add('.tab_4').add('.poster').hide()
       $('.tab_2').add('#media').css({"height": currentEnv.pc ? (videoPosterH - 1) : 'auto'})
       $(this).height(currentEnv.pc ? videoPosterH - 33 : videoPosterH - tab1H)
@@ -455,13 +458,14 @@ function getVideoInfo(callback) {
       hostName = 'snap.j.cn'
   }
   $.ajax({
-    url: 'https://'+ hostName +'/api/worksShareDetail',
-    // url: 'http://'+ location.hostname +':3002/api/worksShareDetail',
+    // url: 'https://'+ hostName +'/api/worksShareDetail',
+    url: 'http://'+ location.hostname +':3002/api/worksShareDetail',
     type: 'POST',
     data: '{"worksId": '+ worksId + '}',
     // data: {worksId},
     success(res) {
       videoUrl = res.works.movie.waterMarkUrl || res.works.movie.url
+      videoUrl = 'http://jq22com.qiniudn.com/jq22-sp.mp4'
       imgUrl = res.works.worksPic.url
       curThemeId = themeId = res.works.scenario.id
       curThemeName= themeName = res.works.scenario.name
@@ -482,6 +486,7 @@ function initPage(){
     alert('浏览器版本过旧，请升级浏览器')
     return
   }
+  if(currentEnv.pc) {$('#media')[0].controls = true}
   getVideoInfo(function () {
     $('.poster').attr('src', imgUrl)
     //初始化统计
@@ -514,7 +519,7 @@ const objARInit = new ARInit()
 const currentEnv = judgeEnv() //获取运行环境
 const appWidth = currentEnv.pc ? 375 : 750
 // const plans = ['planA', 'planB'] //可选方案
-const recommendVideos = [
+/*const recommendVideos = [
   {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？", videoSrc: 'https://snapstatic1.j.cn/video/forum/171110/1340/05351f92a7ae446b.mp4', themeId: 16, themeName: "看我有多美"},
   {id: 1192370251, title: "我们都是小仙女~你能找到乱入的糙汉子吗？", videoSrc: 'https://snapstatic1.j.cn/video/forum/171031/2039/cf88d0984abf4223.mp4', themeId: 25, themeName: "BOYS"},
   {id: 1192328686, title: "人真的有灵魂吗？谁能帮我解释下这个现象？", videoSrc: 'https://snapstatic1.j.cn/video/forum/171031/1959/9aae09e4d4e54a2c.mp4', themeId: 28, themeName: "灵魂出窍"},
@@ -523,6 +528,16 @@ const recommendVideos = [
   {id: 1207083505, title: "女孩子花点钱怎么了？为啥不让买包包？", videoSrc: 'https://snapstatic1.j.cn/video/forum/171117/0740/b4635e7608bd460f.mp4', themeId: 36, themeName: "女孩子花点钱怎么了"},
   {id: 1209339072, title: "Baby想我就多看一眼，么么哒~", videoSrc: 'https://snapstatic1.j.cn/video/forum/171119/1844/346f599368ca441e.mp4', themeId: 26, themeName: "爱你"},
   {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？", videoSrc: 'https://snapstatic1.j.cn/video/forum/171120/1926/2908df4bd1b349cb.mp4', themeId: 21, themeName: "波斯猫"}
+]*/
+const recommendVideos = [
+  {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？", videoSrc: 'http://jq22com.qiniudn.com/jq22-sp.mp4', themeId: 16, themeName: "看我有多美"},
+  {id: 1192370251, title: "我们都是小仙女~你能找到乱入的糙汉子吗？", videoSrc: 'http://jq22com.qiniudn.com/jq22-sp.mp4', themeId: 25, themeName: "BOYS"},
+  {id: 1192328686, title: "人真的有灵魂吗？谁能帮我解释下这个现象？", videoSrc: 'http://jq22com.qiniudn.com/jq22-sp.mp4', themeId: 28, themeName: "灵魂出窍"},
+  {id: 1203977419, title: "我爱洗澡皮肤好好~里面有美人出浴图哦~", videoSrc: 'http://jq22com.qiniudn.com/jq22-sp.mp4', themeId: 29, themeName: "我爱洗澡"},
+  {id: 1210804012, title: "BOOM~睡什么睡，跟我一起嗨起来~~", videoSrc: 'http://jq22com.qiniudn.com/jq22-sp.mp4', themeId: 24, themeName: "不自觉就抖起来了"},
+  {id: 1207083505, title: "女孩子花点钱怎么了？为啥不让买包包？", videoSrc: 'http://jq22com.qiniudn.com/jq22-sp.mp4', themeId: 36, themeName: "女孩子花点钱怎么了"},
+  {id: 1209339072, title: "Baby想我就多看一眼，么么哒~", videoSrc: 'http://jq22com.qiniudn.com/jq22-sp.mp4', themeId: 26, themeName: "爱你"},
+  {id: 1210264099, title: "喵~喵~变身波斯猫~把我带回家吧，好不好？", videoSrc: 'http://jq22com.qiniudn.com/jq22-sp.mp4', themeId: 21, themeName: "波斯猫"}
 ]
 const worksId = objARInit._GetQueryString('id') || 30011
 const clientEnv = objARInit._GetQueryString('env') || 'pro'
