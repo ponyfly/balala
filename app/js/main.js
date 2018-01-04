@@ -9,7 +9,6 @@ import wenan4 from '../imgs/wenan4.png'
 /**
  * 统计点：发送播放请求
  */
-
 function postCommonStats() {
   const url = 'https://snap.j.cn/api/commonStats'
   const {jcnappid, jcnuserid} = objARInit._getJcn()
@@ -42,7 +41,6 @@ function postCommonStats() {
     }
   })
 }
-
 /**
  * 判断运行环境
  * @returns {{}}
@@ -80,7 +78,11 @@ function pushHistroy() {
     title: '',
     url: '#'
   }
-  window.history.pushState(state, '', '#for')
+  try {
+    window.history.pushState(state, '', '#for')
+  } catch (err) {
+
+  }
 }
 /**
  * 跳转到appStore
@@ -476,6 +478,10 @@ function getVideoInfo(callback) {
  * 初始化
  */
 function initPage(){
+  if(navigator.userAgent.indexOf('MSIE 9.0') > -1) {
+    alert('浏览器版本过旧，请升级浏览器')
+    return
+  }
   getVideoInfo(function () {
     $('.poster').attr('src', imgUrl)
     //初始化统计
