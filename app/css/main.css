@@ -221,6 +221,7 @@ body{background-color: #000;}
   padding:0 8px;
   text-align: center;
   font-size: 24px;
+  background-color: rgba(0,0,0,0.4);
 }
 .tab_5 .current_opera_wrapper .current_opera .current_opera_img {
   display: block;

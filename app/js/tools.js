@@ -1,35 +1,15 @@
-export function ARInit() {}
-ARInit.prototype = {
-  constructor: ARInit,
+class Tools {
   /**
    * 获取连接参数
    * @return {[type]} [description]
    */
-  _GetQueryString: function(name) {
+  _GetQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]);
     return null;
-  },
-  /**
-   * [_compressImg description]
-   * @return {[type]} [description]
-   */
-  _compressImg: function(configs) {
-    var getCompress = localStorage.getItem('compressImg'),
-      arrCompress = getCompress.split(','),
-      newThumb = [];
+  }
 
-    for (var i = 0; i < arrCompress.length; i++) {
-      // newThumb.push(arrCompress[i]+'!t.700.700.70');
-      newThumb.push(arrCompress[i]);
-      if (configs && (i == arrCompress.length - 1)) {
-        // newThumb.push(configs);
-        Array.prototype.push.apply(newThumb, configs)
-      }
-    }
-    return newThumb;
-  },
   /**
    * 1x1统计
    * @param  {[type]}   name     [description]
@@ -37,7 +17,7 @@ ARInit.prototype = {
    * @param  {Function} callback [description]
    * @return {[type]}            [description]
    */
-  _send1_1: function(name, val, callback) {
+  _send1_1(name, val, callback) {
     var that = this;
     //获取本地uuid
     var get_uuid = localStorage.getItem('uuid') || that._getCookie('uuid');
@@ -70,12 +50,13 @@ ARInit.prototype = {
     if (val && typeof val == "string") {
       img1x1.src = location.protocol + "//share.j.cn/js/1x1.gif?ucs=UTF-8&un=statistic_channel." + name + "_logname." + val + "_login.0&timestamp=" + (new Date() - 0) + "&jcnappid=" + jcnappid + "&jcnuserid=" + jcnuserid;
     }
-  },
+  }
+
   /**
    * 生成用户uuid
    * @return {[type]} [description]
    */
-  _uuid: function() {
+  _uuid() {
     // Private array of chars to use
     var CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
 
@@ -140,32 +121,54 @@ ARInit.prototype = {
       });
     };
     return Math.uuidCompact()
-  },
-  //写cookies
-  _setCookie: function(name, value) {
+  }
+
+  /**
+   * 写cookies
+   * @param name
+   * @param value
+   * @private
+   */
+  _setCookie(name, value) {
     var Days = 30;
     var exp = new Date();
     exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
-  },
-  //读取cookies
-  _getCookie: function(name) {
+  }
+
+  /**
+   * 读取cookies
+   * @param name
+   * @returns {null}
+   * @private
+   */
+  _getCookie(name) {
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
     if (arr = document.cookie.match(reg))
       return unescape(arr[2]);
     else
       return null;
-  },
-  //删除cookies
-  _delCookie: function(name) {
+  }
+
+  /**
+   * 删除cookies
+   * @param name
+   * @private
+   */
+  _delCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);
     var cval = getCookie(name);
     if (cval != null)
       document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
-  },
-  //生成用户jcn
-  _getJcn: function () {
+  }
+
+  /**
+   * 获取用户jcnappid和jcnuserid
+   * @returns {{jcnappid: type[], jcnuserid: type[]}}
+   * @private
+   */
+  _getJcn () {
     var that = this;
     //获取本地uuid
     var get_uuid = localStorage.getItem('uuid') || that._getCookie('uuid');
@@ -193,4 +196,24 @@ ARInit.prototype = {
       jcnuserid: jcnuserid
     }
   }
+
+  /**
+   * 获取参数对象
+   * @returns {{}}
+   * @private
+   */
+  _getQueryObj() {
+    if(location.search === '') return {}
+    var arr = location.search.slice(1).split('&')
+    var o = {}
+    arr.forEach(function(item){
+      var n = item.indexOf("=")
+      var pro = n === -1 ? item : item.slice(0,n)
+      var val = n === -1 ? null : item.slice(n+1)
+      o[pro] = val
+    })
+    return o
+  }
 }
+const Tool = new Tools()
+export default Tool
