@@ -2,39 +2,77 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>demo1</title>
+  <meta name="viewport" content="width=750,user-scalable=no">
+  <title>Title</title>
   <style>
-    h2{
-      display: none;
+
+    *{
+      margin:0;
+      padding:0;
+    }
+    html, body{
+      width:100%;
+      height:100%;
+    }
+    #app{
+      width: 750px;
+      height: 100%;
+      margin: 0 auto;
+      background-color: wheat;
+    }
+    .addColumn{
+      width:100px;
+      height:35px;
+      color: #f6a;
+    }
+    .list {
+      list-style: none;
+    }
+    .item {
+      float: left;
+    }
+    table{
+      border-collapse: collapse;
+    }
+    table tr td {
+      border:1px solid #000;
     }
   </style>
 </head>
 <body>
-<h1>demo1</h1>
-<a href="./demo2.html" style="font-size: 100px">to demo2</a>
-
-<h1>1</h1>
-<h2>2</h2>
-<script src="./jquery1.12.0.min.js"></script>
+<div id="app">
+  <button class="addColumn">添加一列</button>
+  <ul class="list">
+    <li class="item">
+      <table>
+        <tr>
+          <td>td1-1</td>
+        </tr>
+        <tr>
+          <td>td1-2</td>
+        </tr>
+      </table>
+    </li>
+    <li class="item">
+      <table>
+        <tr>
+          <td>td2-1</td>
+        </tr>
+        <tr>
+          <td>td2-2</td>
+        </tr>
+      </table>
+    </li>
+  </ul>
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.12.0/jquery.min.js"></script>
 <script>
-
-  if (window.history && window.history.pushState) {
-    $(window).on('popstate', function() {
-      console.log(location.hash);
-      if(location.hash !== '#for' ) {
-        $('h1').hide()
-        $('h2').show()
-      }
-    })
+  function addColumn() {
+    var item = '<li class="item"><table><tr><td>hello</td></tr><tr><td>world</td></tr></table></li>'
+    $('.list').append(item)
   }
-  function pushHistory() {
-    var state = {
-      title: '',
-      url: '#'
-    }
-    window.history.pushState(state, '', '#for')
-  }
-  pushHistory()
+  var btn = document.querySelector('.addColumn')
+  btn.onclick = addColumn
 </script>
 </body>
 </html>

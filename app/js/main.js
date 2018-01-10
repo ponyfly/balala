@@ -515,7 +515,6 @@ function initPage(){
 const objARInit = new ARInit()
 const currentEnv = judgeEnv() //获取运行环境
 const appWidth = currentEnv.pc ? 375 : 750
-// const plans = ['planA', 'planB'] //可选方案
 const recommendVideos = [
   {id: 1201110613, title: "哈哈，快来看看我美不美？自拍还能这么搞笑~？", videoSrc: 'https://snapstatic1.j.cn/video/forum/171110/1340/05351f92a7ae446b.mp4', themeId: 16, themeName: "看我有多美"},
   {id: 1192370251, title: "我们都是小仙女~你能找到乱入的糙汉子吗？", videoSrc: 'https://snapstatic1.j.cn/video/forum/171031/2039/cf88d0984abf4223.mp4', themeId: 25, themeName: "BOYS"},
@@ -546,9 +545,6 @@ let themeName = '' //|| 'name1' //用户视频对应的剧本名字
 let curThemeId = ''  //方案A当前播放视频对应的剧本id
 let curThemePic = ''  //方案A当前播放视频对应的剧本封面
 let curThemeName = ''  //方案A当前播放视频对应的剧本名字
-
-// curPlan = plans[Math.floor(Math.random() * 2)] //当前使用的方案
-// curPlan = 'planA'
 
 //initPage
 initPage()

@@ -8,13 +8,32 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebapckPlugin = require('html-webpack-plugin')
 const OptimizeCssPlugin = require('optimize-css-assets-webpack-plugin')
 
+const config = {
+  offline: {
+    devtool:'source-map',
+    openSourceMap: true,
+    publicPath: '/',
+  },
+  test: {
+    devtool:'source-map',
+    openSourceMap: true,
+    publicPath: 'https://snapstatic.j.cn/sharetest/',
+  },
+  online: {
+    devtool:'none',
+    openSourceMap: false,
+    publicPath: 'https://snapstatic.j.cn/share/',
+  }
+}
+const currentEnv = 'online'
+
 module.exports = merge(common, {
   output: {
     path: resolve(__dirname, '..', 'dist'),
     filename: 'static/js/[name]-[chunkhash:8].js',
-    publicPath: 'https://snapstatic.j.cn/sharetest/'
+    publicPath: config[currentEnv].publicPath
   },
-  devtool: 'source-map',
+  devtool: config[currentEnv].devtool,
   module: {
     rules: [
       {
@@ -31,14 +50,14 @@ module.exports = merge(common, {
               loader: 'postcss-loader'
             }
           ],
-          publicPath: 'https://snapstatic.j.cn/sharetest/',
+          publicPath: config[currentEnv].publicPath
         })
       }
     ]
   },
   plugins: [
     new UglifyWebpackPlugin({
-      sourceMap: true,
+      sourceMap: config[currentEnv].openSourceMap,
       uglifyOptions: {
         compress: true,
         warnings: false
