@@ -73,7 +73,7 @@ function pushHistroy() {
  */
 function toAppStore() {
   // alert(curPlan === 'planA'? 'app-a' : 'app-b');
-  window.location.href = curPlan === 'planA' ? 'http://a.app.qq.com/o/simple.jsp?pkgname=cn.j.hers&ckey=CK1381936452665' : 'http://a.app.qq.com/o/simple.jsp?pkgname=cn.j.hers&ckey=CK1334936400029'
+  window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=cn.j.tock&ckey=CK1385982821822'
 }
 /**
  * 获取当前播放视频的剧本信息
