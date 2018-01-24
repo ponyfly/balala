@@ -466,7 +466,9 @@ function initPage(){
     $('.poster').attr('src', imgUrl)
     //初始化统计
     Tool._send1_1('balala', 'share-open', function () {
-      Tool._send1_1('balala', 'share-open-' + themeId, function () {})
+      Tool._send1_1('balala', 'share-open-' + themeId, function () {
+        Tool._send1_1('balala', 'share-open-item-' + queryObj.scenarioId + '-' + queryObj.scenarioMaterialId, function () {})
+      })
     })
   })
   getRecommendVideos()
