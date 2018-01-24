@@ -78,35 +78,75 @@ function toAppStore() {
 /**
  * 获取当前播放视频的剧本信息
  */
-function setCurrentOpera(curThemePic, curThemeName) {
-  if(curThemePic === '') {
-    curThemePic = require('../imgs/default_theme_pic.png')
+function setCurrentOpera(curVideoId, curThemePic, curThemeName) {
+  // if(curThemePic === '') {
+  //   curThemePic = require('../imgs/default_theme_pic.png')
+  // }
+  let hostName = ''
+  switch (queryObj.env) {
+    case 'test' :
+      hostName = 'snaptest.j.cn'
+      break
+    case 'pre' :
+      hostName = 'snappre.j.cn'
+      break
+    case 'pro' :
+      hostName = 'snap.j.cn'
   }
-  $('.current_opera_img').attr({src: curThemePic})
-  $('.current_opera_title').text(curThemeName)
+  $.ajax({
+    url: hostName.indexOf('snap') > -1 ? 'https://'+ hostName +'/api/worksShareDetail' : 'http://'+ location.hostname +':3002/api/worksShareDetail',
+    type: 'POST',
+    data: hostName.indexOf('snap') > -1 ? `{"worksId": ${curVideoId}}` : {worksId: curVideoId},
+  })
+    .then(res => {
+      curThemeName = res.works.scenario.name
+      curThemePic = res.works.scenario.coverUrl
+      $('.current_opera_img').attr({src: res.works.scenario.coverUrl})
+      $('.current_opera_title').text(res.works.scenario.name)
+    })
+    .fail(console.log)
 }
 /**
  * 获取推荐视频列表
  */
 function getRecommendVideos() {
   let arrs = []
-  recommendVideos.forEach((rv, i) => {
-    let $li = $('<li><div><img src="'+ require('../imgs/userposter'+ (i + 1) +'.png') +'" alt=""></div>' + '<span>' + rv.title + '</span></li>')
-    arrs.push($li)
-  })
-  $('.tab_4 .recommend_list').append(arrs.slice(0,4))
-  $('.tab_5 .more_list').append(arrs.slice(4))
+  if (curPlan === 'planA') {
+    recommendVideos.forEach((rv, i) => {
+      let $li = $('<li><div><img src="'+ require('../imgs/userposter'+ (i + 1) +'.png') +'" alt=""></div>' + '<span>' + rv.title + '</span></li>')
+      arrs.push($li)
+    })
+    $('.tab_4 .recommend_list').append(arrs.slice(0,4))
+    $('.tab_5 .more_list').append(arrs.slice(4))
+  } else if (curPlan === 'planB') {
+    const len = recommendVideosB.length
+    for ( let i = 0; i < len; i++) {
+      let $li = $('<li><div><img src="'+ recommendVideosB[i].coverUrl +'?imageMogr2/thumbnail/360x/crop/360x430" alt=""></div>' + '<span>' + recommendVideosB[i].title + '</span></li>')
+      arrs.push($li)
+    }
+    $('.tab_4 .recommend_list').append(arrs.slice(0,8))
+    $('.tab_5 .more_list').append(arrs.slice(8))
+  }
 }
 /**
  * 获取剧本列表
  */
 function getRecommendOperas() {
-  const operas = ['爱你','灵魂出窍','波斯猫','床照','魅力女主播','天竺少女', '皇上驾崩', '贵妃醉酒']
+  let operas = []
   let arrs = []
-  operas.forEach((op, i) => {
-    let $li = $('<li><div><img src="' + require('../imgs/opera'+ (i + 1) +'.png') + '" alt=""></div><span>' + operas[i] + '</span></li>')
-    arrs.push($li)
-  })
+  if (curPlan === 'planA'){
+    operas = ['爱你','灵魂出窍','波斯猫','床照','魅力女主播','天竺少女', '皇上驾崩', '贵妃醉酒']
+    operas.forEach((op, i) => {
+      let $li = $('<li><div><img src="' + require('../imgs/opera'+ (i + 1) +'.png') + '" alt=""></div><span>' + operas[i] + '</span></li>')
+      arrs.push($li)
+    })
+  } else if (curPlan === 'planB') {
+    let len = recommendVideos2.length
+    for (let i = 0; i < len; i++) {
+      let $li = $('<li><div><img src="' + recommendVideos2[i].coverUrl + '?imageMogr2/thumbnail/360x/crop/360x430" alt=""></div><span>' + recommendVideos2[i].title + '</span></li>')
+      arrs.push($li)
+    }
+  }
   $('.tab_6 .recommend_list_all').append(arrs)
 }
 /**
@@ -207,10 +247,11 @@ function addEvent() {
       var tab1H = $('.tab_1').height()
       if(!e.isTrigger) {
         $('#media').attr({'src': videoUrl})
+        curVideoId = queryObj.id
         curThemeId = themeId
         curThemePic = themePic
         curThemeName = themeName
-        setCurrentOpera(curThemePic, curThemeName)
+        setCurrentOpera(curVideoId, curThemePic, curThemeName)
         isUserVideo = true
       } else {
         isUserVideo = false
@@ -281,97 +322,84 @@ function addEvent() {
     }
     tab3FirstClick = true
   })
-  if(curPlan === 'planA') {
-    /*点击推荐视频列表一*/
-    $('.recommend_list').on('click', 'li', function () {
-      var hotId = $('.recommend_list li').index(this) + 1
-      $('#media').attr({src:recommendVideos[hotId - 1].videoSrc})
-      curRecommendId = hotId
-      $('.tab_3').triggerHandler('click')
-      curThemeId = recommendVideos[hotId - 1].themeId
-      curThemePic = require('../imgs/rec-'+ curThemeId +'.png')
-      curThemeName = recommendVideos[hotId - 1].themeName
-      setCurrentOpera(curThemePic, curThemeName)
-      /*点击推荐视频发送id 1x1*/
-      // alert('hot-' + hotId + '-planA')
-      Tool._send1_1('balala', 'hot-' + hotId + '-planA', function () {})
-    })
-    /*点击推荐视频列表二*/
-    $('.more_list').on('click', 'li', function () {
-      var hotId = $('.more_list li').index(this) + 5
-      $('#media').css({opacity: 0})
-      $('#media').attr({src:recommendVideos[hotId - 1].videoSrc})
-      $('.tab_5').hide()
-      curRecommendId = hotId
+  /*点击推荐视频列表一*/
+  $('.recommend_list').on('click', 'li', function () {
+    var hotId = $('.recommend_list li').index(this) + 1
+    $('#media').attr({src:recommendVideos[hotId - 1].videoSrc})
+    curRecommendId = hotId
+    $('.tab_3').triggerHandler('click')
+    if (curPlan === 'planA') {
+      curVideoId = recommendVideos[hotId - 1].id
+    } else if (curPlan === 'planA') {
+      curVideoId = recommendVideosB[hotId - 1].id
+    }
+    curThemeId = recommendVideos[hotId - 1].themeId
+    curThemePic = require('../imgs/rec-'+ curThemeId +'.png')
+    curThemeName = recommendVideos[hotId - 1].themeName
+    setCurrentOpera(curVideoId, curThemePic, curThemeName)
+    /*点击推荐视频发送id 1x1*/
+    // alert('hot-' + hotId + '-planA')
+    Tool._send1_1('balala', 'hot-' + hotId + '-' + curPlan, function () {})
+  })
+  /*点击推荐视频列表二*/
+  $('.more_list').on('click', 'li', function () {
+    var hotId = $('.more_list li').index(this) + (curPlan === 'planA' ? 5 : 9)
+    $('#media').css({opacity: 0})
+    $('#media').attr({src:recommendVideos[hotId - 1].videoSrc})
+    $('.tab_5').hide()
+    curRecommendId = hotId
+    isUserVideo = false
+    if (curPlan === 'planA') {
+      curVideoId = recommendVideos[hotId - 1].id
+    } else if (curPlan === 'planA') {
+      curVideoId = recommendVideosB[hotId - 1].id
+    }
+    curThemeId = recommendVideos[hotId - 1].themeId
+    curThemePic = require('../imgs/rec-'+ curThemeId +'.png')
+    curThemeName = recommendVideos[hotId - 1].themeName
+    setCurrentOpera(curVideoId, curThemePic, curThemeName)
+    media.play()
+    /*点击推荐视频发送id 1x1*/
+    // alert('hot-' + hotId + '-planA')
+    Tool._send1_1('balala', 'hot-' + hotId + '-planA', function () {})
+  })
+  /*点击推荐视频列表三*/
+  $('.recommend_list_all').on('click', 'li', function () {
+    var hotId = $('.recommend_list_all li').index(this) + 1
+    // alert('back-' + curPlan + '-hot-' + hotId)
+    if (curPlan === 'planA') {
+      Tool._send1_1('balala', 'download', function () {
+        Tool._send1_1('balala', 'download-' + themeId, function () {
+          Tool._send1_1('balala', 'download-' + curPlan, function () {
+            Tool._send1_1('balala', 'back-' + curPlan + '-hot-' + hotId, function () {
+              console.log(hotId);
+              toAppStore()
+            })
+          })
+        })
+      })
+    } else if (curPlan === 'planB') {
+      $('#media').attr({src:recommendVideos2[hotId - 1].videoSrc})
       isUserVideo = false
-      curThemeId = recommendVideos[hotId - 1].themeId
-      curThemePic = require('../imgs/rec-'+ curThemeId +'.png')
-      curThemeName = recommendVideos[hotId - 1].themeName
-      setCurrentOpera(curThemePic, curThemeName)
+      $('.tab_6').hide()
+      $('.tab_2').show()
+      $('.tab_2').add('#media').css({'height': currentEnv.pc ? 666 : 'auto'})
+      $('.tab_3').height(currentEnv.pc ? 634 : videoPosterH - 120)
+      $('.tab_1').css({position: 'fixed', bottom: currentEnv.pc ? 'auto' : 0, 'z-index':26})
+      curRecommendId = hotId
+      if (curPlan === 'planA') {
+        curVideoId = recommendVideos[hotId - 1].id
+      } else if (curPlan === 'planA') {
+        curVideoId = recommendVideos2[hotId - 1].id
+      }
+      curThemeId = recommendVideos2[hotId - 1].themeId
+      curThemePic = require('../imgs/rec-'+ '21' +'.png')
+      curThemeName = recommendVideos2[hotId - 1].themeName
+      setCurrentOpera(curVideoId, curThemePic, curThemeName)
       media.play()
-      /*点击推荐视频发送id 1x1*/
-      // alert('hot-' + hotId + '-planA')
-      Tool._send1_1('balala', 'hot-' + hotId + '-planA', function () {})
-    })
-    /*点击推荐视频列表三*/
-    $('.recommend_list_all').on('click', 'li', function () {
-      var hotId = $('.recommend_list_all li').index(this) + 1
-      // alert('back-' + curPlan + '-hot-' + hotId)
-      Tool._send1_1('balala', 'download', function () {
-        Tool._send1_1('balala', 'download-' + themeId, function () {
-          Tool._send1_1('balala', 'download-' + curPlan, function () {
-            Tool._send1_1('balala', 'back-' + curPlan + '-hot-' + hotId, function () {
-              console.log(hotId);
-              toAppStore()
-            })
-          })
-        })
-      })
-    })
-  } else {
-    $('.recommend_list').on('click', 'li', function () {
-      var hotId = $('.recommend_list li').index(this) + 1
-      // alert(curPlan + '-hot-' + hotId)
-      Tool._send1_1('balala', 'download', function () {
-        Tool._send1_1('balala', 'download-' + themeId, function () {
-          Tool._send1_1('balala', 'download-' + curPlan, function () {
-            Tool._send1_1('balala', curPlan + '-hot-' + hotId, function () {
-              console.log(hotId);
-              toAppStore()
-            })
-          })
-        })
-      })
-    })
-    $('.more_list').on('click', 'li', function () {
-      var hotId = $('.more_list li').index(this) + 5
-      // alert(curPlan + '-hot-' + hotId)
-      Tool._send1_1('balala', 'download', function () {
-        Tool._send1_1('balala', 'download-' + themeId, function () {
-          Tool._send1_1('balala', 'download-' + curPlan, function () {
-            Tool._send1_1('balala', curPlan + '-hot-' + hotId, function () {
-              console.log(hotId);
-              toAppStore()
-            })
-          })
-        })
-      })
-    })
-    $('.recommend_list_all').on('click', 'li', function () {
-      var hotId = $('.recommend_list_all li').index(this) + 1
-      // alert('back-' + curPlan + '-hot-' + hotId)
-      Tool._send1_1('balala', 'download', function () {
-        Tool._send1_1('balala', 'download-' + themeId, function () {
-          Tool._send1_1('balala', 'download-' + curPlan, function () {
-            Tool._send1_1('balala', 'back-' + curPlan + '-hot-' + hotId, function () {
-              console.log(hotId);
-              toAppStore()
-            })
-          })
-        })
-      })
-    })
-  }
+      Tool._send1_1('balala', 'back-' + curPlan + '-hot-' + hotId, function () {})
+    }
+  })
   /**
    * 重播
    */
@@ -387,6 +415,14 @@ function addEvent() {
  * 不同版本样式调整
  */
 function changeStyle() {
+  if (curPlan === 'planB') {
+    $('.header').attr('src',require('../imgs/download3@2x.png'))
+    $('.tab_4 .recommend_title').html('大家都在玩')
+    $('.tab_5 .more_title').html('大家都在玩')
+    $('.tab_5 .current_opera_wrapper').css({background: 'url('+ require('../imgs/opera_current3.png') +')'})
+  } else {
+    $('.header').attr('src',require('../imgs/download2@2x.png'))
+  }
   var oImg = new Image()
   oImg.src = wenan4
   oImg.onload = function () {
@@ -488,9 +524,7 @@ function initPage(){
   if(currentEnv.iphone){
     $('.tab_6 .recommend_list_all').css({'padding-bottom': 120})
   }
-  if(curPlan === 'planA'){
-    $('.more_list li div').css({height: appWidth * 0.41})
-  }
+  $('.more_list li div').css({height: appWidth * 0.41})
 }
 const currentEnv = judgeEnv() //获取运行环境
 const appWidth = currentEnv.pc ? 375 : 750
@@ -504,22 +538,48 @@ const recommendVideos = [
   {id: 1209339072, title: 'Baby想我就多看一眼，么么哒~', videoSrc: 'https://snapstatic1.j.cn/video/forum/171119/1844/346f599368ca441e.mp4', themeId: 26, themeName: '爱你'},
   {id: 1210264099, title: '喵~喵~变身波斯猫~把我带回家吧，好不好？', videoSrc: 'https://snapstatic1.j.cn/video/forum/171120/1926/2908df4bd1b349cb.mp4', themeId: 21, themeName: '波斯猫'}
 ]
+const recommendVideosB = [
+  {id: 743, title: '哈哈，快来看看我美不美？自拍还能这么搞笑~？BBBB', coverUrl: 'http://snapstatic2.j.cn/image/snap/180119/1801/7c55c642e62f4c4a.jpg', videoSrc: 'https://snapstatic2.j.cn/water/video/snap/180122/1936/9b6c1db900654ceb.mp4', themeId: 16, themeName: '看我有多美'},
+  {id: 24429, title: '我们都是小仙女~你能找到乱入的糙汉子吗？BBBB', coverUrl: 'http://snapstatic2.j.cn/image/snap/180119/1801/7c55c642e62f4c4a.jpg', videoSrc: 'https://snapstatic2.j.cn/water/video/snap/180122/1936/9b6c1db900654ceb.mp4', themeId: 25, themeName: 'BOYS'},
+  {id: 708, title: '人真的有灵魂吗？谁能帮我解释下这个现象？BBBB', coverUrl: 'http://snapstatic2.j.cn/image/snap/180119/1801/7c55c642e62f4c4a.jpg', videoSrc: 'https://snapstatic2.j.cn/water/video/snap/180122/1936/9b6c1db900654ceb.mp4', themeId: 28, themeName: '灵魂出窍'},
+  {id: 957, title: '我爱洗澡皮肤好好~里面有美人出浴图哦~BBBB', coverUrl: 'http://snapstatic2.j.cn/image/snap/180119/1801/7c55c642e62f4c4a.jpg', videoSrc: 'https://snapstatic2.j.cn/water/video/snap/180122/1936/9b6c1db900654ceb.mp4', themeId: 29, themeName: '我爱洗澡'},
+  {id: 24065, title: 'BOOM~睡什么睡，跟我一起嗨起来~~BBBB', coverUrl: 'http://snapstatic2.j.cn/image/snap/180119/1801/7c55c642e62f4c4a.jpg', videoSrc: 'https://snapstatic2.j.cn/water/video/snap/180122/1936/9b6c1db900654ceb.mp4', themeId: 24, themeName: '不自觉就抖起来了'},
+  {id: 982, title: '女孩子花点钱怎么了？为啥不让买包包？BBBB', coverUrl: 'http://snapstatic2.j.cn/image/snap/180119/1801/7c55c642e62f4c4a.jpg', videoSrc: 'https://snapstatic2.j.cn/water/video/snap/180122/1936/9b6c1db900654ceb.mp4', themeId: 36, themeName: '女孩子花点钱怎么了'},
+  {id: 11491, title: 'Baby想我就多看一眼，么么哒~BBBB', coverUrl: 'http://snapstatic2.j.cn/image/snap/180119/1801/7c55c642e62f4c4a.jpg', videoSrc: 'https://snapstatic2.j.cn/water/video/snap/180122/1936/9b6c1db900654ceb.mp4', themeId: 26, themeName: '爱你'},
+  {id: 22410, title: '喵~喵~变身波斯猫~把我带回家吧，好不好？BBBB', coverUrl: 'http://snapstatic2.j.cn/image/snap/180119/1801/7c55c642e62f4c4a.jpg', videoSrc: 'https://snapstatic1.j.cn/video/forum/171120/1926/2908df4bd1b349cb.mp4', themeId: 21, themeName: '波斯猫'},
+  {id: 860, title: '喵~喵~变身波斯猫~把我带回家吧，好不好？BBBB', coverUrl: 'http://static3.j.cn/img/forum/180105/1634/fc254d625935469c.jpg', videoSrc: 'http://snapstatic2.j.cn/water/video/snap/180105/1634/016c9774099b41db.mp4', themeId: 21, themeName: '波斯猫'},
+  {id: 831, title: '喵~喵~变身波斯猫~把我带回家吧，好不好？BBBB', coverUrl: 'http://static3.j.cn/img/forum/180105/1634/fc254d625935469c.jpg', videoSrc: 'http://snapstatic2.j.cn/water/video/snap/180105/1634/016c9774099b41db.mp4', themeId: 21, themeName: '波斯猫'},
+  {id: 12259, title: '喵~喵~变身波斯猫~把我带回家吧，好不好？BBBB', coverUrl: 'http://static3.j.cn/img/forum/180105/1634/fc254d625935469c.jpg', videoSrc: 'http://snapstatic2.j.cn/water/video/snap/180105/1634/016c9774099b41db.mp4', themeId: 21, themeName: '波斯猫'},
+  {id: 1374, title: '喵~喵~变身波斯猫~把我带回家吧，好不好？BBBB', coverUrl: 'http://static3.j.cn/img/forum/180105/1634/fc254d625935469c.jpg', videoSrc: 'http://snapstatic2.j.cn/water/video/snap/180105/1634/016c9774099b41db.mp4', themeId: 21, themeName: '波斯猫'}
+]
+const recommendVideos2 = [
+  {id: 22392, title: '哈哈，快来看看我美不美？自拍还能这么搞笑~？22222', coverUrl: 'https://snapstatic1.j.cn/water/video/snap/180119/1801/9c72daa0969f4957.mp4', themeId: 16666, themeName: '看我有多美2222'},
+  {id: 11518, title: '哈哈，快来看看我美不美？自拍还能这么搞笑~？22222', coverUrl: 'https://snapstatic1.j.cn/water/video/snap/180119/1801/9c72daa0969f4957.mp4', themeId: 16666, themeName: '看我有多美2222'},
+  {id: 22852, title: '哈哈，快来看看我美不美？自拍还能这么搞笑~？22222', coverUrl: 'https://snapstatic1.j.cn/water/video/snap/180119/1801/9c72daa0969f4957.mp4', themeId: 16666, themeName: '看我有多美2222'},
+  {id: 1374, title: '哈哈，快来看看我美不美？自拍还能这么搞笑~？22222', coverUrl: 'https://snapstatic1.j.cn/water/video/snap/180119/1801/9c72daa0969f4957.mp4', themeId: 16666, themeName: '看我有多美2222'},
+  {id: 1016, title: '哈哈，快来看看我美不美？自拍还能这么搞笑~？22222', coverUrl: 'https://snapstatic1.j.cn/water/video/snap/180119/1801/9c72daa0969f4957.mp4', themeId: 16666, themeName: '看我有多美2222'},
+  {id: 708, title: '哈哈，快来看看我美不美？自拍还能这么搞笑~？22222', coverUrl: 'https://snapstatic1.j.cn/water/video/snap/180119/1801/9c72daa0969f4957.mp4', themeId: 16666, themeName: '看我有多美2222'},
+  {id: 11517, title: '哈哈，快来看看我美不美？自拍还能这么搞笑~？22222', coverUrl: 'https://snapstatic1.j.cn/water/video/snap/180119/1801/9c72daa0969f4957.mp4', themeId: 16666, themeName: '看我有多美2222'},
+  {id: 11626, title: '哈哈，快来看看我美不美？自拍还能这么搞笑~？22222', coverUrl: 'https://snapstatic1.j.cn/water/video/snap/180119/1801/9c72daa0969f4957.mp4', themeId: 16666, themeName: '看我有多美2222'}
+]
 const queryObj = Tool._getQueryObj()
 
 let userId = ''
 let videoPosterH = 0
-let curPlan = 'planA' //当前方案
+let plans = ['planA', 'planB']
+let curPlan = plans[Math.floor(Math.random() * 2)] //当前方案
 let tab3FirstClick = true //是否是在首页点击tab_3
 let initPlayer = true //是否开始播放
 let isUserVideo = true //是否是用户video
 let curRecommendId = null //当前点击的推荐video的Id
 let onceClick = true
 
-let videoUrl = ''  //|| 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4' //用户视频播放地址
+let videoUrl = '' || 'http://v9-dy.ixigua.com/3e1ef4c7ff3bf209d2f1a3d9eb66ffc2/5a6851eb/video/m/220c03aa544305141e6b8e63cc2a3d385321151f37c0000b0637a7156b4/'  //|| 'https://video1.j.cn/video/forum/171130/2249/c72bad97685d40ec.mp4' //用户视频播放地址
 let imgUrl = '' //|| 'https://static3.j.cn/img/forum/171130/2249/5e3084219b684fd5.jpg' //用户视频封面
 let themeId = '' || 0 //用户视频对应的剧本id
 let themePic = '' //|| 'http://ozv2s2gcd.bkt.clouddn.com/img/snap/171201/1605/0c94e13c91284e0f.png' //用户视频对应的剧本封面
 let themeName = '' //|| 'name1' //用户视频对应的剧本名字
+let curVideoId = ''
 let curThemeId = ''  //方案A当前播放视频对应的剧本id
 let curThemePic = ''  //方案A当前播放视频对应的剧本封面
 let curThemeName = ''  //方案A当前播放视频对应的剧本名字
