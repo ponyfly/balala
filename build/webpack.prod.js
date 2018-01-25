@@ -25,13 +25,13 @@ const config = {
     publicPath: 'https://snapstatic.j.cn/share/',
   }
 }
-const currentEnv = 'online'
+const currentEnv = 'test'
 
 module.exports = merge(common, {
   output: {
     path: resolve(__dirname, '..', 'dist'),
-    filename: 'static/js/[name].js',
-    // filename: 'static/js/[name]-[chunkhash:8].js',
+    // filename: 'static/js/[name].js',
+    filename: 'static/js/[name]-[chunkhash:8].js',
     publicPath: config[currentEnv].publicPath
   },
   devtool: config[currentEnv].devtool,
@@ -83,8 +83,8 @@ module.exports = merge(common, {
     //根据模块的相对路径生成一个hash值作为模块id，一旦模块内容改变，则hash改变
     new webpack.HashedModuleIdsPlugin(),
     new ExtractTextPlugin({
-      filename: "static/css/[name].css"
-      // filename: "static/css/[name].[contenthash:8].css"
+      // filename: "static/css/[name].css"
+      filename: "static/css/[name].[contenthash:8].css"
     }),
     //根据模板文件生成index.html
     new HtmlWebapckPlugin({

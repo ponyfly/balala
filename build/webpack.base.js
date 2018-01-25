@@ -36,8 +36,8 @@ module.exports = {
           loader: 'url-loader',
           options: {
             limit: 8192,
-            name: 'static/imgs/[name].[ext]'
-            // name: 'static/imgs/[name].[hash:8].[ext]'
+            // name: 'static/imgs/[name].[ext]'
+            name: 'static/imgs/[name].[hash:8].[ext]'
           }
         }
       }

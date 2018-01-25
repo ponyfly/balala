@@ -166,6 +166,7 @@ body{background-color: #000;}
 }
 .recommend_list li span, .more_list li span, .recommend_list_all li span {
   display: block;
+  height: 80px;
   width:100%;
   line-height: 40px;
   margin-top: 9px;
