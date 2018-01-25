@@ -280,9 +280,7 @@ function addEvent() {
   $('#media').on('playing', function () {
     if(initPlayer){
       $(this).css({opacity: 1})
-      if(curPlan === 'planA') {
-        $('.tab_1').css({'z-index': 26})
-      }
+      $('.tab_1').css({'z-index': 26})
       if(!currentEnv.pc) {
         $('.tab_1').show().addClass('bounceInUp')
         setTimeout(function () {
@@ -330,7 +328,6 @@ function addEvent() {
     $('.tab_3').triggerHandler('click')
     setCurrentOpera(curVideoId)
     /*点击推荐视频发送id 1x1*/
-    // alert('hot-' + hotId + '-planA')
     Tool._send1_1('balala', 'hot-' + hotId + '-' + curPlan, function () {})
   })
   /*点击推荐视频列表二*/
@@ -356,7 +353,6 @@ function addEvent() {
   /*点击推荐视频列表三*/
   $('.recommend_list_all').on('click', 'li', function () {
     var hotId = $('.recommend_list_all li').index(this) + 1
-    // alert('back-' + curPlan + '-hot-' + hotId)
     if (curPlan === 'planA') {
       Tool._send1_1('balala', 'download', function () {
         Tool._send1_1('balala', 'download-' + themeId, function () {
@@ -373,7 +369,7 @@ function addEvent() {
       $('.tab_6').add('.poster').hide()
       $('.tab_2').show()
       $('.tab_2').add('#media').css({'height': currentEnv.pc ? 666 : 'auto'})
-      $('.tab_3').height(currentEnv.pc ? 634 : videoPosterH - 120)
+      $('.tab_3').css({height:currentEnv.pc ? 634 : 1210, display:'block', opacity:'0'})
       $('.tab_1').css({position: 'fixed', bottom: currentEnv.pc ? 'auto' : 0, 'z-index':26})
       curRecommendId = hotId
       curVideoId = recommendVideos2[hotId - 1].id
@@ -400,18 +396,18 @@ function addEvent() {
  */
 function changeStyle() {
   if (curPlan === 'planB') {
-    $('.header').attr('src',require('../imgs/download3@2x.png'))
+    $('.header').add('.download').attr('src',require('../imgs/download3@2x.png'))
     $('.tab_4 .recommend_title').html('大家都在玩')
     $('.tab_5 .more_title').html('大家都在玩')
     $('.tab_5 .current_opera_wrapper').css({background: 'url('+ require('../imgs/opera_current3.png') +')'})
-  } else {
-    $('.header').attr('src',require('../imgs/download2@2x.png'))
-  }
-  var oImg = new Image()
-  oImg.src = wenan4
-  oImg.onload = function () {
-    $('.tab_6 .recommend_title').remove()
-    $('.tab_6').prepend($(oImg).clone())
+  } else if (curPlan === 'planA') {
+    $('.header').add('.download').attr('src',require('../imgs/download2@2x.png'))
+    var oImg = new Image()
+    oImg.src = wenan4
+    oImg.onload = function () {
+      $('.tab_6 .recommend_title').remove()
+      $('.tab_6').prepend($(oImg).clone())
+    }
   }
 }
 /**
@@ -486,7 +482,9 @@ function initPage(){
     //初始化统计
     Tool._send1_1('balala', 'share-open', function () {
       Tool._send1_1('balala', 'share-open-' + themeId, function () {
-        Tool._send1_1('balala', 'share-open-item-' + queryObj.scenarioId + '-' + queryObj.scenarioMaterialId, function () {})
+        Tool._send1_1('balala', 'share-open-' + curPlan, function () {
+          Tool._send1_1('balala', 'share-open-item-' + queryObj.scenarioId + '-' + queryObj.scenarioMaterialId, function () {})
+        })
       })
     })
   })
@@ -522,28 +520,28 @@ const recommendVideos = [
   {id: 278, title: '喵~喵~变身波斯猫~把我带回家吧，好不好？', videoSrc: 'https://snapstatic1.j.cn/video/forum/171120/1926/2908df4bd1b349cb.mp4'}
 ]
 const recommendVideosB = [
-  {id: 708, title: '宝宝感冒了，不想吃药，不想打针', coverUrl: 'https://static2.j.cn/img/forum/171226/2100/232251f9111742e5.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171226/2100/29ee411a8f92489a.mp4'},
-  {id: 743, title: '这个视频带我穿越东南亚喽~', coverUrl: 'https://static3.j.cn/img/forum/171209/2339/3da9874c7bee4571.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171209/2339/83ccf5dde1f04f3c.mp4'},
-  {id: 831, title: '来呀，快活呀~', coverUrl: 'https://static3.j.cn/img/forum/171128/1823/b760781e09a14d50.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171128/1824/3e1431a4c7d643dd.mp4'},
-  {id: 860, title: '免费抓一只可爱的娃娃带回家~', coverUrl: 'https://static3.j.cn/img/forum/180105/1634/fc254d625935469c.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/180105/1634/016c9774099b41db.mp4'},
+  {id: 22392, title: '喵~喵~我是波斯猫~', coverUrl: 'https://snapstatic2.j.cn/image/snap/180119/1801/7c55c642e62f4c4a.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/180119/1801/9c72daa0969f4957.mp4'},
+  {id: 11517, title: '点进来就可以和夜华君谈恋爱哦！', coverUrl: 'https://static1.j.cn/img/forum/180114/1720/cefacf73f325417f.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/snap/180114/1719/f44b1bf633ff4f88.mp4'},
   {id: 957, title: '我是女生', coverUrl: 'https://static2.j.cn/img/forum/171123/1812/40fb21cd5871471b.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171123/1809/4abd4d561e5445de.mp4'},
-  {id: 982, title: '想我就多看一眼，么么哒~', coverUrl: 'https://static2.j.cn/img/forum/171124/0507/7f0d61f1e61a4d3e.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171124/0506/ddf822469d8c489c.mp4'},
-  {id: 1374, title: '请叫我小仙女~', coverUrl: 'https://static2.j.cn/img/forum/171227/1753/9f5922f43190471b.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/171227/1753/0f659a18aa14426d.mp4'},
-  {id: 11491, title: '据说看到这个的人，都爱上了我~', coverUrl: 'https://static3.j.cn/img/forum/180112/1642/875f3af4815d4204.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/180112/1642/c41eb63f241b476d.mp4'},
-  {id: 12259, title: '我男朋友可帅了呢，不信你看！', coverUrl: 'https://snapstatic1.j.cn/image/snap/180119/1129/0ddf45cb896845ef.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/snap/180119/1129/da681ff00d4c4ea4.mp4'},
+  {id: 11626, title: '我和小哥哥的不可描述……', coverUrl: 'https://snapstatic2.j.cn/image/testsnap/180117/1428/6c6f1acd250b4816.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/dramamp4/testsnap/180117/1428/a3848132b0f44a41.mp4'},
+  {id: 25357, title: '我男朋友可帅了呢，不信你看！', coverUrl: 'https://static1.j.cn/img/forum/180122/1646/4a797bf9cd324889.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/180122/1640/3b5cb119808142a0.mp4'},
   {id: 22410, title: '没请我吃过饭，就没资格说我胖~', coverUrl: 'https://static4.j.cn/img/forum/180113/1907/09aaadeee1084a98.jpg', videoSrc: 'https://snapstatic1.j.cn/video/snap/180113/1907/e9c797f9c63548b2.mp4'},
-  {id: 24065, title: '是个无封面的', coverUrl: 'https://snapstatic1.j.cn/image/snap/180121/2321/0752713b907d48cd.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/snap/180121/2322/2f0bc753f8d64612.mp4'},
-  {id: 24429, title: '我的小可爱，皇冠给你戴~', coverUrl: 'https://snapstatic1.j.cn/image/snap/180122/1936/38d75f85cd6e496b.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/180122/1936/9b6c1db900654ceb.mp4'}
+  {id: 24065, title: '唱首歌给你听，喜欢吗？', coverUrl: 'https://snapstatic1.j.cn/image/snap/180121/2321/0752713b907d48cd.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/snap/180121/2322/2f0bc753f8d64612.mp4'},
+  {id: 24429, title: '我的小可爱，皇冠给你戴~', coverUrl: 'https://snapstatic1.j.cn/image/snap/180122/1936/38d75f85cd6e496b.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/180122/1936/9b6c1db900654ceb.mp4'},
+  {id: 831, title: '来呀，快活呀~', coverUrl: 'https://static3.j.cn/img/forum/171128/1823/b760781e09a14d50.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171128/1824/3e1431a4c7d643dd.mp4'},
+  {id: 743, title: '这个视频带我穿越东南亚喽~', coverUrl: 'https://static3.j.cn/img/forum/171209/2339/3da9874c7bee4571.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171209/2339/83ccf5dde1f04f3c.mp4'},
+  {id: 708, title: '宝宝感冒了，不想吃药，不想打针', coverUrl: 'https://static2.j.cn/img/forum/171226/2100/232251f9111742e5.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171226/2100/29ee411a8f92489a.mp4'},
+  {id: 860, title: '免费抓一只可爱的娃娃带回家~', coverUrl: 'https://static3.j.cn/img/forum/180105/1634/fc254d625935469c.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/180105/1634/016c9774099b41db.mp4'}
 ]
 const recommendVideos2 = [
-  {id: 708, title: '宝宝感冒了，不想吃药，不想打针', coverUrl: 'https://static2.j.cn/img/forum/171226/2100/232251f9111742e5.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171226/2100/29ee411a8f92489a.mp4'},
+  {id: 860, title: '免费抓一只可爱的娃娃带回家~', coverUrl: 'https://static3.j.cn/img/forum/180105/1634/fc254d625935469c.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/180105/1634/016c9774099b41db.mp4'},
   {id: 1016, title: '想不想看看大风车可以吹出什么？', coverUrl: 'https://static3.j.cn/img/forum/171127/2109/baa9b71ba92f4ad2.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171127/2109/738f73c4c7f44a27.mp4'},
-  {id: 1374, title: '请叫我小仙女~', coverUrl: 'https://static2.j.cn/img/forum/171227/1753/9f5922f43190471b.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/171227/1753/0f659a18aa14426d.mp4'},
-  {id: 11517, title: '点进来就可以和夜华君谈恋爱哦！', coverUrl: 'https://static1.j.cn/img/forum/180114/1720/cefacf73f325417f.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/snap/180114/1719/f44b1bf633ff4f88.mp4'},
+  {id: 11491, title: '据说看到这个的人，都爱上了我~', coverUrl: 'https://static3.j.cn/img/forum/180112/1642/875f3af4815d4204.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/180112/1642/c41eb63f241b476d.mp4'},
+  {id: 22852, title: '快来收你的新年礼物吧~', coverUrl: 'https://snapstatic2.j.cn/image/snap/180120/0714/c35b94fd12e24687.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/snap/180120/0714/787911b56e994855.mp4'},
   {id: 11518, title: '下雪了，你会变成我的雪人吗', coverUrl: 'https://static1.j.cn/img/forum/180114/1711/605d499a2f3942d8.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/forum/180114/1709/a4311d0291814673.mp4'},
-  {id: 11626, title: '我和小哥哥的不可描述……', coverUrl: 'https://snapstatic2.j.cn/image/testsnap/180117/1428/6c6f1acd250b4816.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/dramamp4/testsnap/180117/1428/a3848132b0f44a41.mp4'},
-  {id: 22392, title: '喵~喵~我是波斯猫~', coverUrl: 'https://snapstatic2.j.cn/image/snap/180119/1801/7c55c642e62f4c4a.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/180119/1801/9c72daa0969f4957.mp4'},
-  {id: 22852, title: '快来收你的新年礼物啦！', coverUrl: 'https://snapstatic2.j.cn/image/snap/180120/0714/c35b94fd12e24687.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/snap/180120/0714/787911b56e994855.mp4'}
+  {id: 743, title: '这个视频带我穿越东南亚喽~', coverUrl: 'https://static3.j.cn/img/forum/171209/2339/3da9874c7bee4571.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171209/2339/83ccf5dde1f04f3c.mp4'},
+  {id: 1374, title: '请叫我小仙女~', coverUrl: 'https://static2.j.cn/img/forum/171227/1753/9f5922f43190471b.jpg', videoSrc: 'https://snapstatic1.j.cn/compress/video/snap/171227/1753/0f659a18aa14426d.mp4'},
+  {id: 982, title: '想我就多看一眼，么么哒~', coverUrl: 'https://static2.j.cn/img/forum/171124/0507/7f0d61f1e61a4d3e.jpg', videoSrc: 'https://snapstatic2.j.cn/compress/video/forum/171124/0506/ddf822469d8c489c.mp4'}
 ]
 const queryObj = Tool._getQueryObj()
 
