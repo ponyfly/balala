@@ -153,6 +153,7 @@ function getRecommendOperas() {
 function addEvent() {
   var media = document.getElementById('media')
   $(window).on('popstate', function () {
+    console.log(location.hash)
     if(currentEnv.iphone || currentEnv.pc) {
       media.pause()
     }

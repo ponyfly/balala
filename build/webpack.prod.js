@@ -25,7 +25,7 @@ const config = {
     publicPath: 'https://snapstatic.j.cn/share/',
   }
 }
-const currentEnv = 'test'
+const currentEnv = 'online'
 
 module.exports = merge(common, {
   output: {
